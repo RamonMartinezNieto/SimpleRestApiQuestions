@@ -30,7 +30,7 @@ namespace WebApplication2
                     Version = "v1.0.0",
                     Title = $"Questions API v1",
                     Description = "API To get questions, created only to practice.",
-                    TermsOfService = new Uri("https://www.c-sharpcorner.com/members/catcher-wong"),
+                    TermsOfService = new Uri("https://www.ramonmartineznieto.com"),
                     Contact = new OpenApiContact
                     {
                         Name = "Ramón Martínez",
@@ -39,7 +39,7 @@ namespace WebApplication2
                     License = new OpenApiLicense
                     {
                         Name = "MIT License"
-                    }
+                    },
                 });
             });
         }
