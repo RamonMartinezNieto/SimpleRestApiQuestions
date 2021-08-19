@@ -38,7 +38,7 @@ namespace WebApplication2.Service
         {
             List<QuestionDto> questionItems = new List<QuestionDto>();
             string dirPath = Directory.GetCurrentDirectory(); //heroku
-            JArray questionsArray = JArray.Parse(File.ReadAllText(Path.Combine(dirPath, @"/Resources/QuestionsRepository.json")));//heroku
+            JArray questionsArray = JArray.Parse(File.ReadAllText(Path.Combine(dirPath, @"./Resources/QuestionsRepository.json")));//heroku
             //JArray questionsArray = JArray.Parse(File.ReadAllText(@".\Resources\QuestionsRepository.json"));
 
             foreach (JToken result in questionsArray.Children().ToList()) 
