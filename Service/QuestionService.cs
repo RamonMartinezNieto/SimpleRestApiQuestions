@@ -37,7 +37,7 @@ namespace WebApplication2.Service
         private List<QuestionDto> ReadJsonRepository() 
         {
             List<QuestionDto> questionItems = new List<QuestionDto>();
-            JArray questionsArray = JArray.Parse(File.ReadAllText(@"/Resources/QuestionsRepository.json"));
+            JArray questionsArray = JArray.Parse(File.ReadAllText(@".\Resources\QuestionsRepository.json"));
 
             foreach (JToken result in questionsArray.Children().ToList()) 
             {
