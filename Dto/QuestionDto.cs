@@ -6,6 +6,8 @@ namespace WebApplication2
 
         public string Question { get; set; }
 
-        public string[] Answers { get; set; }
+        public string[] WrongAnswers { get; set; }
+
+        public string CorrectAnswer { get; set; }
     }
 }
