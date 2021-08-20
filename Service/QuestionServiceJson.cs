@@ -8,6 +8,9 @@ using WebApplication2.Dto;
 
 namespace WebApplication2.Service
 {
+    /// <summary>
+    /// Deprecated, create only to practice with JSON files
+    /// </summary>
     public class QuestionServiceJson : IQuestionService
     {
         private const string JSON_FILE_PATH = @"./Resources/QuestionsRepository.json";

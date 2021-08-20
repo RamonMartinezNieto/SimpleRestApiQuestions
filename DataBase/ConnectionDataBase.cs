@@ -1,19 +1,16 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SimpreRestApiQuestions
 {
     public class ConnectionDataBase
     {
-        public string Server { get; set; }
-        public string DatabaseName { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Port { get; set; }
-        public string SslMode { get; set; }
+        private string Server { get; set; }
+        private string DatabaseName { get; set; }
+        private string UserName { get; set; }
+        private string Password { get; set; }
+        private string Port { get; set; }
+        private string SslMode { get; set; }
 
         public MySqlConnection Connection { get; private set; }
 
@@ -28,7 +25,12 @@ namespace SimpreRestApiQuestions
 
         private ConnectionDataBase()
         {
-         
+            DatabaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            Server = Environment.GetEnvironmentVariable("DATABASE_HOST");
+            UserName = Environment.GetEnvironmentVariable("DATABASE_USER");
+            Password = Environment.GetEnvironmentVariable("DATABASE_PASS");
+            Port = "3306";
+            SslMode = "none";
         }
 
         public void Connect()

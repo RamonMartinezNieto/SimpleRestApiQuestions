@@ -14,19 +14,12 @@ namespace SimpreRestApiQuestions.Service
         public QuestionServicesMySql()
         {
             connection = ConnectionDataBase.Instance();
-            connection.DatabaseName = "simplerestapiquestion";
-            connection.Server = "127.0.0.1";
-            connection.UserName = "admin";
-            connection.Password = "admin";
-            connection.Port = "3306";
-            connection.SslMode = "none";
         }
 
         public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd)
         {
             throw new NotImplementedException();
         }
-
 
         public void DeleteQuestion(int id)
         {
@@ -39,7 +32,7 @@ namespace SimpreRestApiQuestions.Service
             {
                 connection.Connect();
 
-                string query = $"SELECT q.*, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four FROM question q JOIN wrong w ON q.id = w.id_question;";
+                string query = $"SELECT q.*, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four FROM question q JOIN wrong_answer w ON q.id = w.id_question;";
                 MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 var reader = cmd.ExecuteReader();
 
