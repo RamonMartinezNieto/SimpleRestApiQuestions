@@ -54,10 +54,11 @@ namespace WebApplication2.Service
             return questionItems;
         }
 
-        public void DeleteQuestion(int id)
+        public bool DeleteQuestion(int id)
         {
             JArray questionsArray = JArray.Parse(File.ReadAllText(@".\Resources\QuestionsRepository.json"));
             //TODO
+            throw new NotImplementedException();
         }
 
         public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd)

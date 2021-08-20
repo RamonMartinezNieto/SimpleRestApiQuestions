@@ -21,18 +21,32 @@ namespace SimpreRestApiQuestions.Service
             throw new NotImplementedException();
         }
 
-        public void DeleteQuestion(int id)
+        public bool DeleteQuestion(int id)
         {
-            throw new NotImplementedException();
+            string query = $"DELETE FROM question WHERE id = {id}";
+            try
+            {
+                connection.Connect();
+                using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
+                int rowsDeleted = cmd.ExecuteNonQuery();
+                return rowsDeleted > 0;
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception("Fail in DeleteQuestion class QuestionServiceMySql. ", ex);
+            }
+            finally 
+            {
+                CloseConnection();
+            }
         }
 
         public IEnumerable<QuestionDto> GetAllQuestions()
         {
             try
             {
-                connection.Connect();
-
                 string query = $"SELECT q.*, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four FROM question q JOIN wrong_answer w ON q.id = w.id_question;";
+                connection.Connect();
                 MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 var reader = cmd.ExecuteReader();
 
@@ -57,7 +71,7 @@ namespace SimpreRestApiQuestions.Service
             }
             catch (Exception ex) 
             { 
-                throw ex; 
+                throw new Exception("Fail in GetAllQuestions class QuestionServiceMySql. ", ex); 
             }
             finally 
             {
@@ -67,7 +81,35 @@ namespace SimpreRestApiQuestions.Service
 
         public QuestionDto GetQuestion(int id)
         {
-            throw new NotImplementedException();
+            string query = $"SELECT q.*, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four FROM question q JOIN wrong_answer w ON q.id = w.id_question WHERE q.id = {id};";
+            try
+            {
+                connection.Connect();
+                MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
+                var reader = cmd.ExecuteReader();
+
+                return new QuestionDto
+                {
+                    Id = reader.GetInt32("id"),
+                    Question = reader.GetString("question"),
+                    CorrectAnswer = reader.GetString("correct_answer"),
+                    WrongAnswers = new string[]
+                    {
+                        reader.GetString("wrong_one"),
+                        reader.GetString("wrong_two"),
+                        reader.GetString("wrong_three"),
+                        reader.GetString("wrong_four")
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fail GetQuestion(int id) in QuestionServicesMySql method", ex);
+            }
+            finally 
+            {
+                CloseConnection();
+            }
         }
 
         public IEnumerable<QuestionDto> GetQuestions(int quantity)

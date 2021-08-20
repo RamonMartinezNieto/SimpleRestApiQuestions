@@ -11,7 +11,7 @@ namespace WebApplication2.Service
 
         QuestionDto GetQuestion(int id);
 
-        void DeleteQuestion(int id);
+        bool DeleteQuestion(int id);
 
         void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd);
 
