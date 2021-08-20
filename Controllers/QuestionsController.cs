@@ -15,7 +15,7 @@ namespace WebApplication2.Controllers
         public QuestionsController(IQuestionService service) => _questionService = service;
 
         [HttpGet]
-        public string Get() => "Hola";
+        public string Get() => "Hello People! :)";
 
         [HttpGet]
         [Route("GetAllQuestions")]

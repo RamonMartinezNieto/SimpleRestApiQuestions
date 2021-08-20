@@ -8,12 +8,12 @@ using WebApplication2.Dto;
 
 namespace WebApplication2.Service
 {
-    public class QuestionService : IQuestionService
+    public class QuestionServiceJson : IQuestionService
     {
         private const string JSON_FILE_PATH = @"./Resources/QuestionsRepository.json";
         private readonly List<QuestionDto> questionsList = new List<QuestionDto>();
 
-        public QuestionService()
+        public QuestionServiceJson()
         {
             lock (questionsList) { 
                 questionsList = ReadJsonRepository();
@@ -39,9 +39,9 @@ namespace WebApplication2.Service
         private List<QuestionDto> ReadJsonRepository() 
         {
             List<QuestionDto> questionItems = new List<QuestionDto>();
-              string dirPath = Directory.GetCurrentDirectory(); //heroku
-              JArray questionsArray = JArray.Parse(File.ReadAllText(Path.Combine(dirPath,JSON_FILE_PATH )));//heroku
-            //JArray questionsArray = JArray.Parse(File.ReadAllText(JSON_FILE_PATH));
+            //  string dirPath = Directory.GetCurrentDirectory(); //heroku
+            //  JArray questionsArray = JArray.Parse(File.ReadAllText(Path.Combine(dirPath,JSON_FILE_PATH )));//heroku
+            JArray questionsArray = JArray.Parse(File.ReadAllText(JSON_FILE_PATH));
 
             foreach (JToken result in questionsArray.Children().ToList()) 
             {
