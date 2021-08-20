@@ -86,8 +86,9 @@ namespace SimpreRestApiQuestions.Service
             {
                 connection.Connect();
                 MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
-                var reader = cmd.ExecuteReader();
+                MySqlDataReader reader = cmd.ExecuteReader();
 
+                reader.Read();
                 return new QuestionDto
                 {
                     Id = reader.GetInt32("id"),
