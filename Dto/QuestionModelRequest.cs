@@ -1,9 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace WebApplication2.Dto
 {
-    public class QuestionDto
+    public class QuestionModelRequest
     {
-        public int Id { get; set; }
-
         public string Question { get; set; }
 
         public string[] WrongAnswers { get; set; }

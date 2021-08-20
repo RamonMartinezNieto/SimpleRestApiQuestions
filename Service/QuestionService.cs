@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WebApplication2.Dto;
 
 namespace WebApplication2.Service
 {
     public class QuestionService : IQuestionService
     {
+        private const string JSON_FILE_PATH = @"./Resources/QuestionsRepository.json";
         private readonly List<QuestionDto> questionsList = new List<QuestionDto>();
 
         public QuestionService()
@@ -37,9 +39,9 @@ namespace WebApplication2.Service
         private List<QuestionDto> ReadJsonRepository() 
         {
             List<QuestionDto> questionItems = new List<QuestionDto>();
-            string dirPath = Directory.GetCurrentDirectory(); //heroku
-            JArray questionsArray = JArray.Parse(File.ReadAllText(Path.Combine(dirPath, @"./Resources/QuestionsRepository.json")));//heroku
-            //JArray questionsArray = JArray.Parse(File.ReadAllText(@".\Resources\QuestionsRepository.json"));
+            //  string dirPath = Directory.GetCurrentDirectory(); //heroku
+            //  JArray questionsArray = JArray.Parse(File.ReadAllText(Path.Combine(dirPath,JSON_FILE_PATH )));//heroku
+            JArray questionsArray = JArray.Parse(File.ReadAllText(JSON_FILE_PATH));
 
             foreach (JToken result in questionsArray.Children().ToList()) 
             {
@@ -49,5 +51,28 @@ namespace WebApplication2.Service
             return questionItems;
         }
 
+        public void DeleteQuestion(int id)
+        {
+            JArray questionsArray = JArray.Parse(File.ReadAllText(@".\Resources\QuestionsRepository.json"));
+            //TODO
+        }
+
+        public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd)
+        {
+            QuestionDto questionDto = new QuestionDto()
+            {
+                Id = maxQuestionsToRequest() + 1,
+                Question = question,
+                WrongAnswers = wrongAnswers,
+                CorrectAnswer = correctAnswerd
+            };
+
+            JArray questionsArray = JArray.Parse(File.ReadAllText(@".\Resources\QuestionsRepository.json"));
+            questionsArray.Add(JObject.FromObject(questionDto));
+
+            try {
+                File.WriteAllText(JSON_FILE_PATH, questionsArray.ToString());
+            } catch(Exception ex) { throw ex; }
+        }
     }
 }

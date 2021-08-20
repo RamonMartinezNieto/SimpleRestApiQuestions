@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": 1,
     "Question": "pregunta uno de prueba",
     "WrongAnswers": [
       "uno",
@@ -8,10 +8,10 @@
       "tres",
       "cuatro"
     ],
-    "CorrectAnswer" : "Well done one."
+    "CorrectAnswer": "Well done one."
   },
   {
-    "id": "2",
+    "id": 2,
     "Question": "pregunta dos de prueba",
     "WrongAnswers": [
       "uno",
@@ -23,7 +23,7 @@
     "CorrectAnswer": "Well done two."
   },
   {
-    "id": "3",
+    "id": 3,
     "Question": "pregunta 3 de prueba",
     "WrongAnswers": [
       "uno",
@@ -34,7 +34,7 @@
     "CorrectAnswer": "Well done three."
   },
   {
-    "id": "4",
+    "id": 4,
     "Question": "pregunta 4 de prueba",
     "WrongAnswers": [
       "uno",
@@ -43,5 +43,13 @@
       "cuatro"
     ],
     "CorrectAnswer": "Well done four."
+  },
+  {
+    "Id": 5,
+    "Question": "string",
+    "WrongAnswers": [
+      "string"
+    ],
+    "CorrectAnswer": "string"
   }
 ]

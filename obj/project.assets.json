@@ -242,9 +242,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\RMN\\source\\repos\\WebApplication2\\WebApplication2.csproj",
-      "projectName": "WebApplication2",
-      "projectPath": "C:\\Users\\RMN\\source\\repos\\WebApplication2\\WebApplication2.csproj",
+      "projectUniqueName": "C:\\Users\\RMN\\source\\repos\\WebApplication2\\SimpreRestApiQuestions.csproj",
+      "projectName": "SimpreRestApiQuestions",
+      "projectPath": "C:\\Users\\RMN\\source\\repos\\WebApplication2\\SimpreRestApiQuestions.csproj",
       "packagesPath": "C:\\Users\\RMN\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\RMN\\source\\repos\\WebApplication2\\obj\\",
       "projectStyle": "PackageReference",
