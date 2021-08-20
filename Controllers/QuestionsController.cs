@@ -67,7 +67,7 @@ namespace WebApplication2.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpDelete]
         [Route("RemoveQuestion")]
         public ActionResult RemoveQuestion(int id) 
         {
