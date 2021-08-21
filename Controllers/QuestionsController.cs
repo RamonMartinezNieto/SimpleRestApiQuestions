@@ -15,7 +15,7 @@ namespace WebApplication2.Controllers
         public QuestionsController(IQuestionService service) => _questionService = service;
 
         [HttpGet]
-        public string Get() => "Hello People! :)";
+        public string Index() => "Hello People! :)";
 
         [HttpGet]
         [Route("GetAllQuestions")]
@@ -24,10 +24,6 @@ namespace WebApplication2.Controllers
         [HttpGet]
         [Route("GetMaxQuestionsToRequest")]
         public ActionResult<int> GetMaxQuestionsToRequest() => Ok(_questionService.MaxQuestionsToRequest());
-
-        [HttpGet]
-        [Route("GetCategories")]
-        public ActionResult<CategoryDto> GetCategories() => Ok(_questionService.GetCategories());
 
         [HttpGet]
         [Route("GetNumberOfQuestions")]
@@ -73,21 +69,6 @@ namespace WebApplication2.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("CreateCategory")]
-        public ActionResult CreateCategory(string category)
-        {
-            try
-            {
-                int idCategory = _questionService.CreateCategory(category);
-                return Ok($"Category added with id {idCategory}");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Category not added");
-            }
-        }
-
         [HttpDelete]
         [Route("RemoveQuestion")]
         public ActionResult RemoveQuestion(int id) 
@@ -101,22 +82,6 @@ namespace WebApplication2.Controllers
             catch (Exception)
             {
                 return BadRequest("Question not removed");
-            }
-        }
-
-        [HttpDelete]
-        [Route("RemoveCategory")]
-        public ActionResult RemoveCategory(int id)
-        {
-            try
-            {
-                if (_questionService.DeleteCategory(id))
-                    return Ok("Category removed");
-                else return NoContent();
-            }
-            catch (Exception)
-            {
-                return BadRequest("Question not removed, there are questions' foreign key with this category");
             }
         }
     }
