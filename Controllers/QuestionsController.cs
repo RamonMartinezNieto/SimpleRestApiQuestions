@@ -26,6 +26,10 @@ namespace WebApplication2.Controllers
         public ActionResult<int> GetMaxQuestionsToRequest() => Ok(_questionService.MaxQuestionsToRequest());
 
         [HttpGet]
+        [Route("GetCategories")]
+        public ActionResult<CategoryDto> GetCategories() => Ok(_questionService.GetCategories());
+
+        [HttpGet]
         [Route("GetNumberOfQuestions")]
         public ActionResult<QuestionDto> GetNumberOfQuestions([Required] int quantity)
         {

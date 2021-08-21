@@ -148,6 +148,36 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
+        public IEnumerable<CategoryDto> GetCategories()
+        {
+            string query = "SELECT id, name FROM categories;";
+            try
+            {
+                List<CategoryDto> categories = new List<CategoryDto>();
+                connection.Connect();
+                using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    categories.Add(new CategoryDto
+                    {
+                        Id = reader.GetInt32("id"),
+                        Name = reader.GetString("name")
+                    });
+                }
+                return categories; 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fail maxQuestionsToRequest method in QuestionServicesMySql", ex);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
         public QuestionDto GetQuestion(int id)
         {
             string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four"
@@ -193,6 +223,7 @@ namespace SimpreRestApiQuestions.Service
             //TODO
             throw new NotImplementedException();
         }
+
 
         public int MaxQuestionsToRequest()
         {

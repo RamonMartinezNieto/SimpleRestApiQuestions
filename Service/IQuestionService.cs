@@ -17,5 +17,6 @@ namespace WebApplication2.Service
 
         int MaxQuestionsToRequest();
 
+        IEnumerable<CategoryDto> GetCategories();
     }
 }
