@@ -253,7 +253,7 @@ namespace SimpreRestApiQuestions.Service
 
         public int MaxQuestionsToRequest(int categoryId)
         {
-            string query = $"select count(*) from question where category = {categoryId}";
+            string query = $"select count(*) from question where category = {categoryId};";
             try
             {
                 connection.Connect();

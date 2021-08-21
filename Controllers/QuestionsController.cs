@@ -68,7 +68,7 @@ namespace WebApplication2.Controllers
 
         [HttpDelete]
         [Route("RemoveQuestion")]
-        public ActionResult RemoveQuestion(int id) 
+        public ActionResult RemoveQuestion([Required] int id) 
         {
             try
             {

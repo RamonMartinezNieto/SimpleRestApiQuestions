@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using WebApplication2.Dto;
 using WebApplication2.Service;
 
 namespace SimpleRestApiQuestions.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class CategoriesController : Controller
     {
         IQuestionService _questionService;
@@ -17,7 +20,7 @@ namespace SimpleRestApiQuestions.Controllers
 
         [HttpPost]
         [Route("CreateCategory")]
-        public ActionResult CreateCategory(string category)
+        public ActionResult CreateCategory([Required] string category)
         {
             try
             {
