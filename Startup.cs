@@ -37,7 +37,7 @@ namespace WebApplication2
                     //TermsOfService = new Uri("https://www.ramonmartineznieto.com"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Ramón Martínez",
+                        Name = "Ramon Martinez",
                         Email = "ramon.martinez.nieto@gmail.com",
                         Url = new Uri(@"https://www.ramonmartineznieto.com")
                     },
