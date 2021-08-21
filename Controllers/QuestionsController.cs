@@ -19,6 +19,7 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Get all questions in the repository of specific category.
         /// </summary>
+        /// <response code="200">Returns all questions'content of the category specified</response>
         [HttpGet]
         [Route("GetAllQuestions")]
         [AllowAnonymous]
@@ -35,6 +36,9 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Get random questions from specified category. 
         /// </summary>
+        /// <response code="200">Returns the number of questions requested</response>
+        /// <response code="400">Some problem was occur with the category Id or the data base</response>
+        /// <response code="401">Unauthorized Jason Web Token</response>
         [HttpGet]
         [Route("GetRandomQuestions")]
         [AllowAnonymous]
@@ -55,6 +59,8 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Get specifiec Question.
         /// </summary>
+        /// <response code="200">Retur question content</response>
+        /// <response code="204">There aren't conent with the specified question id</response>
         [HttpGet]
         [Route("GetQuestion/{id:int}")]
         [AllowAnonymous]
@@ -71,6 +77,9 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Create a new question. 
         /// </summary>
+        /// <response code="200">Question added</response>
+        /// <response code="401">Unauthorized Jason Web Token</response>
+        /// <response code="400">Quiestion not added, trying to insert invalid question data</response>
         [HttpPost]
         [Route("AddQuestion")]
         [Authorize(Roles = "admin")]
@@ -94,6 +103,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         /// <response code="200">If the question was deleted</response>
         /// <response code="400">If the question was not deleted</response>
+        /// <response code="401">Unauthorized Jason Web Token</response>
         [HttpDelete]
         [Route("RemoveQuestion")]
         [Authorize(Roles = "admin")]
