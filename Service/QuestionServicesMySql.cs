@@ -109,9 +109,9 @@ namespace SimpreRestApiQuestions.Service
         {
             try
             {
-                string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four"
-                    + "FROM question q"
-                    + "JOIN wrong_answer w ON q.id = w.id_question"
+                string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four "
+                    + "FROM question q "
+                    + "JOIN wrong_answer w ON q.id = w.id_question "
                     + "JOIN categories c on q.category = c.id;";
 
                 connection.Connect();
