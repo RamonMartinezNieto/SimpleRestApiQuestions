@@ -203,6 +203,54 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
+        public int CreateCategory(string category)
+        {
+            string query = $"INSERT INTO categories (name) VALUES(@name_category); select last_insert_id();";
+
+            try
+            {
+                connection.Connect();
+
+                MySqlCommand cmd = connection.Connection.CreateCommand();
+                cmd.Connection = connection.Connection;
+                cmd.CommandText = query;
+                cmd.Parameters.AddWithValue("@name_category", category);
+                return Convert.ToInt32(cmd.ExecuteScalar());
+                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fail in inerting new question. ", ex);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+
+        public bool DeleteCategory(int id)
+        {
+            string queryDeleteCategory = $"DELETE FROM category WHERE id = {id}";
+
+            try
+            {
+                connection.Connect();
+
+                MySqlCommand cmd = new MySqlCommand(queryDeleteCategory, connection.Connection);
+                int rowsDeleted = cmd.ExecuteNonQuery();
+
+                return rowsDeleted > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fail in DeleteQuestion class QuestionServiceMySql. ", ex);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
 
         public int MaxQuestionsToRequest()
         {
@@ -275,5 +323,6 @@ namespace SimpreRestApiQuestions.Service
                 throw ex;
             }
         }
+
     }
 }
