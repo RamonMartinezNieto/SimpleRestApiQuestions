@@ -14,14 +14,23 @@ namespace WebApplication2.Controllers
 
         public QuestionsController(IQuestionService service) => _questionService = service;
 
+        /// <summary>
+        /// Get all questions in the repository of specific category.
+        /// </summary>
         [HttpGet]
         [Route("GetAllQuestions")]
-        public ActionResult<QuestionDto> GetAllQuestions() => Ok(_questionService.GetAllQuestions());
+        public ActionResult<QuestionDto> GetAllQuestions(int categoryId) => Ok(_questionService.GetAllQuestions(categoryId));
 
+        /// <summary>
+        /// Get max number of questions for a specific category. 
+        /// </summary>
         [HttpGet]
         [Route("GetMaxQuestionsToRequest")]
         public ActionResult<int> GetMaxQuestionsToRequest([Required] int categoryId) => Ok(_questionService.MaxQuestionsToRequest(categoryId));
 
+        /// <summary>
+        /// Get random questions from specified category. 
+        /// </summary>
         [HttpGet]
         [Route("GetRandomQuestions")]
         public ActionResult<QuestionDto> GetRandomQuestions([Required] int quantity, [Required] int categoryId)
@@ -38,6 +47,9 @@ namespace WebApplication2.Controllers
             }
         }
 
+        /// <summary>
+        /// Get specifiec Question.
+        /// </summary>
         [HttpGet]
         [Route("GetQuestion/{id:int}")]
         public ActionResult<int> GetQuestion([Required] int id)
@@ -50,6 +62,9 @@ namespace WebApplication2.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a new question. 
+        /// </summary>
         [HttpPost]
         [Route("AddQuestion")]
         public ActionResult AddQuestion([Required] QuestionModelRequest question)
@@ -58,6 +73,7 @@ namespace WebApplication2.Controllers
             {
                 if (question.WrongAnswers.Length != 3) return BadRequest("You need to add 3 wrong answers");
                 _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
+                //TODO usar CREATED or CREATED AT ROUTE 
                 return Ok("Question added");
             }
             catch (Exception)
@@ -66,6 +82,11 @@ namespace WebApplication2.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete specific question.
+        /// </summary>
+        /// <response code="200">If the question was deleted</response>
+        /// <response code="400">If the question was not deleted</response>
         [HttpDelete]
         [Route("RemoveQuestion")]
         public ActionResult RemoveQuestion([Required] int id) 

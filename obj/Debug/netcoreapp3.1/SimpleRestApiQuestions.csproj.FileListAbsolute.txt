@@ -38,3 +38,5 @@ C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQ
 C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQuestions.dll
 C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQuestions.pdb
 C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQuestions.genruntimeconfig.cache
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\SimpleRestApiQuestions.xml
+C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQuestions.xml
