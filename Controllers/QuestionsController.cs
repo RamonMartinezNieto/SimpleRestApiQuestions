@@ -77,8 +77,9 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                _questionService.DeleteQuestion(id);
-                return Ok("Question removed");
+                if (_questionService.DeleteQuestion(id))
+                    return Ok("Question removed");
+                else return NoContent();
             }
             catch (Exception)
             {
