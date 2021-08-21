@@ -231,7 +231,7 @@ namespace SimpreRestApiQuestions.Service
 
         public bool DeleteCategory(int id)
         {
-            string queryDeleteCategory = $"DELETE FROM category WHERE id = {id}";
+            string queryDeleteCategory = $"DELETE FROM categories WHERE id = {id}";
 
             try
             {
