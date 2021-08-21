@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using SimpreRestApiQuestions.Service;
 using System;
+using System.Collections.Generic;
 using WebApplication2.Service;
 
 namespace WebApplication2
@@ -30,17 +33,18 @@ namespace WebApplication2
                 {
                     Version = "v1.0.0",
                     Title = $"Questions API v1",
-                    Description = "API To get questions, created only to practice.",
-                    TermsOfService = new Uri("https://www.ramonmartineznieto.com"),
+                    Description = "API To get and create questions, created only to practice.",
+                    //TermsOfService = new Uri("https://www.ramonmartineznieto.com"),
                     Contact = new OpenApiContact
                     {
                         Name = "Ramón Martínez",
                         Email = "ramon.martinez.nieto@gmail.com",
+                        Url = new Uri(@"https://www.ramonmartineznieto.com")
                     },
-                    License = new OpenApiLicense
-                    {
-                        Name = "MIT License"
-                    },
+                    //License = new OpenApiLicense
+                    //{
+                    //    Name = "MIT License"
+                    //},
                 });
                 c.UseAllOfToExtendReferenceSchemas();
                 
@@ -58,6 +62,8 @@ namespace WebApplication2
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Preguntas API V1");
+                c.ShowExtensions();
+                c.ShowCommonExtensions();
             });
 
             app.UseHttpsRedirection();
