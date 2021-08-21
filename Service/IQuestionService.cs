@@ -5,7 +5,7 @@ namespace WebApplication2.Service
 {
     public interface IQuestionService
     {
-        IEnumerable<QuestionDto> GetAllQuestions();
+        IEnumerable<QuestionDto> GetAllQuestions(int categoryId);
 
         IEnumerable<QuestionDto> GetQuestions(int quantity, int categoryId);
 

@@ -108,11 +108,11 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
-        public IEnumerable<QuestionDto> GetAllQuestions()
+        public IEnumerable<QuestionDto> GetAllQuestions(int categoryId)
         {
             try
             {
-                string query = SQL_SELECT_QUESTIONS;
+                string query = SQL_SELECT_QUESTIONS + $" WHERE category = {categoryId};";
 
                 connection.Connect();
                 using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);

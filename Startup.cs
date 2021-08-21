@@ -37,10 +37,11 @@ namespace WebApplication2
                     //TermsOfService = new Uri("https://www.ramonmartineznieto.com"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Ramon Martinez",
+                        Name = "Ramon Martinez (back-end dev)",
                         Email = "ramon.martinez.nieto@gmail.com",
                         Url = new Uri(@"https://www.ramonmartineznieto.com")
                     },
+                    //TODO add second contact
                     //License = new OpenApiLicense
                     //{
                     //    Name = "MIT License"
