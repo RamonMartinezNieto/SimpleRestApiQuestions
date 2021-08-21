@@ -9,6 +9,8 @@ using Microsoft.OpenApi.Models;
 using SimpreRestApiQuestions.Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using WebApplication2.Service;
 
 namespace WebApplication2
@@ -48,6 +50,9 @@ namespace WebApplication2
                     //},
                 });
                 c.UseAllOfToExtendReferenceSchemas();
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 
             });
         }

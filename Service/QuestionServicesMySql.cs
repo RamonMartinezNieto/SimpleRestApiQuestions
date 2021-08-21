@@ -20,7 +20,7 @@ namespace SimpreRestApiQuestions.Service
             connection = ConnectionDataBase.Instance();
         }
 
-        public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswer, int category_id)
+        public int CreateQuestion(string question, string[] wrongAnswers, string correctAnswer, int category_id)
         {
             string query = $"INSERT INTO question (question, correct_answer, category) VALUES(@question, @correctAnswer, @category_id); select last_insert_id();";
             string queryWrongAnswers = $"INSERT INTO wrong_answer (id_question, wrong_one, wrong_two, wrong_three) " +
@@ -50,6 +50,8 @@ namespace SimpreRestApiQuestions.Service
                 cmd.ExecuteNonQuery();
 
                 transaction.Commit();
+
+                return idQuestion;
             }
             catch (Exception ex)
             {

@@ -13,7 +13,7 @@ namespace WebApplication2.Service
 
         bool DeleteQuestion(int id);
 
-        void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd, int category_id);
+        int CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd, int category_id);
 
         int MaxQuestionsToRequest(int categoryId);
 

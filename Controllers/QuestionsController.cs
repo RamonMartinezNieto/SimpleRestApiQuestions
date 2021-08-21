@@ -65,6 +65,8 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Create a new question. 
         /// </summary>
+        /// <response code="201">Returns the newly created item</response>
+        ///  <response code="400">If the question was not created</response>            
         [HttpPost]
         [Route("AddQuestion")]
         public ActionResult AddQuestion([Required] QuestionModelRequest question)
@@ -72,8 +74,8 @@ namespace WebApplication2.Controllers
             try
             {
                 if (question.WrongAnswers.Length != 3) return BadRequest("You need to add 3 wrong answers");
-                _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
-                return Ok("Question added");
+                int idQuestion = _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
+                return CreatedAtRoute($"GetQuestion/{idQuestion}", _questionService.GetQuestion(idQuestion));
             }
             catch (Exception)
             {
@@ -84,6 +86,8 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Delete specific question.
         /// </summary>
+        /// <response code="200">If the question was deleted</response>
+        /// <response code="400">If the question was not deleted</response>
         [HttpDelete]
         [Route("RemoveQuestion")]
         public ActionResult RemoveQuestion([Required] int id) 
