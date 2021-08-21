@@ -182,11 +182,11 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
-        public IEnumerable<QuestionDto> GetQuestions(int quantity)
+        public IEnumerable<QuestionDto> GetQuestions(int quantity, int categoryId)
         {
             try
             {
-                string query = SQL_SELECT_QUESTIONS + $" ORDER BY RAND() LIMIT {quantity}";
+                string query = SQL_SELECT_QUESTIONS + $" WHERE category = {categoryId} ORDER BY RAND() LIMIT {quantity}";
                 connection.Connect();
                 using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
@@ -251,9 +251,9 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
-        public int MaxQuestionsToRequest()
+        public int MaxQuestionsToRequest(int categoryId)
         {
-            string query = "select count(*) from question;";
+            string query = $"select count(*) from question where category = {categoryId}";
             try
             {
                 connection.Connect();

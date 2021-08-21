@@ -7,7 +7,7 @@ namespace WebApplication2.Service
     {
         IEnumerable<QuestionDto> GetAllQuestions();
 
-        IEnumerable<QuestionDto> GetQuestions(int quantity);
+        IEnumerable<QuestionDto> GetQuestions(int quantity, int categoryId);
 
         QuestionDto GetQuestion(int id);
 
@@ -15,7 +15,7 @@ namespace WebApplication2.Service
 
         void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd, int category_id);
 
-        int MaxQuestionsToRequest();
+        int MaxQuestionsToRequest(int categoryId);
 
         IEnumerable<CategoryDto> GetCategories();
 

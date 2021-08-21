@@ -15,26 +15,23 @@ namespace WebApplication2.Controllers
         public QuestionsController(IQuestionService service) => _questionService = service;
 
         [HttpGet]
-        public string Index() => "Hello People! :)";
-
-        [HttpGet]
         [Route("GetAllQuestions")]
         public ActionResult<QuestionDto> GetAllQuestions() => Ok(_questionService.GetAllQuestions());
 
         [HttpGet]
         [Route("GetMaxQuestionsToRequest")]
-        public ActionResult<int> GetMaxQuestionsToRequest() => Ok(_questionService.MaxQuestionsToRequest());
+        public ActionResult<int> GetMaxQuestionsToRequest([Required] int categoryId) => Ok(_questionService.MaxQuestionsToRequest(categoryId));
 
         [HttpGet]
-        [Route("GetNumberOfQuestions")]
-        public ActionResult<QuestionDto> GetNumberOfQuestions([Required] int quantity)
+        [Route("GetRandomQuestions")]
+        public ActionResult<QuestionDto> GetRandomQuestions([Required] int quantity, [Required] int categoryId)
         {
-            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest()) 
+            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest(categoryId)) 
                 return BadRequest($"There aren't {quantity} questions");
             
             try
             {
-                return Ok(_questionService.GetQuestions(quantity));
+                return Ok(_questionService.GetQuestions(quantity, categoryId));
             }
             catch {
                 return BadRequest("A problem was occur");
@@ -43,7 +40,7 @@ namespace WebApplication2.Controllers
 
         [HttpGet]
         [Route("GetQuestion/{id:int}")]
-        public ActionResult<int> GetMaxQuestionsToRequest([Required] int id)
+        public ActionResult<int> GetQuestion([Required] int id)
         {
             try {
                 return Ok(_questionService.GetQuestion(id));

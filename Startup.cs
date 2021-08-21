@@ -61,7 +61,7 @@ namespace WebApplication2
 
             app.UseSwagger();
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Preguntas API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Questions API V1");
                 c.ShowExtensions();
                 c.ShowCommonExtensions();
             });
