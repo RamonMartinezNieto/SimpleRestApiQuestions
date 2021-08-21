@@ -19,6 +19,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// <summary>
         /// Get all categories that can be used to create a new questions. 
         /// </summary>
+        /// <response code="200">Return response with the categories</response>
         [HttpGet]
         [Route("GetCategories")]
         [AllowAnonymous]
@@ -27,6 +28,9 @@ namespace SimpleRestApiQuestions.Controllers
         /// <summary>
         /// Create a new category into the repository.
         /// </summary>
+        /// <response code="200">If the category was added</response>
+        /// <response code="401">Unauthorized Jason Web Token</response>
+        /// <response code="400">If the category was not added</response>
         [HttpPost]
         [Route("CreateCategory")]
         [Authorize(Roles = "admin")]
@@ -35,6 +39,7 @@ namespace SimpleRestApiQuestions.Controllers
             try
             {
                 int idCategory = _questionService.CreateCategory(category);
+                //TODO usar create at  or create
                 return Ok($"Category added with id {idCategory}");
             }
             catch (Exception)
@@ -47,6 +52,9 @@ namespace SimpleRestApiQuestions.Controllers
         /// Delete specific Category.
         /// </summary>
         /// <returns>BadRequest if the category can't be removed because is in use or not exist.</returns>
+        /// <response code="200">If the category was removed</response>
+        /// <response code="401">Unauthorized Jason Web Token</response>
+        /// <response code="400">If the category was not deleted</response>
         [HttpDelete]
         [Route("RemoveCategory")]
         [Authorize(Roles = "admin")]
