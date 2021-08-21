@@ -65,8 +65,6 @@ namespace WebApplication2.Controllers
         /// <summary>
         /// Create a new question. 
         /// </summary>
-        /// <response code="201">Returns the newly created item</response>
-        ///  <response code="400">If the question was not created</response>            
         [HttpPost]
         [Route("AddQuestion")]
         public ActionResult AddQuestion([Required] QuestionModelRequest question)
@@ -74,8 +72,9 @@ namespace WebApplication2.Controllers
             try
             {
                 if (question.WrongAnswers.Length != 3) return BadRequest("You need to add 3 wrong answers");
-                int idQuestion = _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
-                return CreatedAtRoute($"GetQuestion/{idQuestion}", _questionService.GetQuestion(idQuestion));
+                _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
+                //TODO usar CREATED or CREATED AT ROUTE 
+                return Ok("Question added");
             }
             catch (Exception)
             {
