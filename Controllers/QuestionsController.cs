@@ -63,6 +63,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
+                if (question.WrongAnswers.Length != 3) return BadRequest("You need to add 4 wrong answers");
                 _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
                 return Ok("Question added");
             }

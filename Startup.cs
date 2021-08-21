@@ -42,6 +42,8 @@ namespace WebApplication2
                         Name = "MIT License"
                     },
                 });
+                c.UseAllOfToExtendReferenceSchemas();
+                
             });
         }
 
