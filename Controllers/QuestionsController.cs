@@ -23,7 +23,7 @@ namespace WebApplication2.Controllers
 
         [HttpGet]
         [Route("GetMaxQuestionsToRequest")]
-        public ActionResult<int> GetMaxQuestionsToRequest() => Ok(_questionService.maxQuestionsToRequest());
+        public ActionResult<int> GetMaxQuestionsToRequest() => Ok(_questionService.MaxQuestionsToRequest());
 
         [HttpGet]
         [Route("GetNumberOfQuestions")]
@@ -58,7 +58,7 @@ namespace WebApplication2.Controllers
         {
             try
             {
-                _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer);
+                _questionService.CreateQuestion(question.Question, question.WrongAnswers, question.CorrectAnswer, question.IdCategory);
                 return Ok("Question added");
             }
             catch (Exception)

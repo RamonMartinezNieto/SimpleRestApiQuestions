@@ -13,9 +13,9 @@ namespace WebApplication2.Service
 
         bool DeleteQuestion(int id);
 
-        void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd);
+        void CreateQuestion(string question, string[] wrongAnswers, string correctAnswerd, int category_id);
 
-        int maxQuestionsToRequest();
+        int MaxQuestionsToRequest();
 
     }
 }

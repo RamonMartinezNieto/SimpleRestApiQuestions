@@ -16,9 +16,9 @@ namespace SimpreRestApiQuestions.Service
             connection = ConnectionDataBase.Instance();
         }
 
-        public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswer)
+        public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswer, int category_id)
         {
-            string query = $"INSERT INTO question (question, correct_answer) VALUES(@question, @correctAnswer); select last_insert_id();";
+            string query = $"INSERT INTO question (question, correct_answer, category) VALUES(@question, @correctAnswer, @category_id); select last_insert_id();";
             string queryWrongAnswers = $"INSERT INTO wrong_answer (id_question, wrong_one, wrong_two, wrong_three, wrong_four) " +
                 $"VALUES(@id_question, @wrong_one, @wrong_two, @wrong_three, @wrong_four); ";
 
@@ -35,6 +35,7 @@ namespace SimpreRestApiQuestions.Service
                 cmd.CommandText = query;
                 cmd.Parameters.AddWithValue("@question", question);
                 cmd.Parameters.AddWithValue("@correctAnswer", correctAnswer);
+                cmd.Parameters.AddWithValue("@category_id", category_id);
                 int idQuestion = Convert.ToInt32(cmd.ExecuteScalar());
 
                 cmd.CommandText = queryWrongAnswers;
@@ -67,16 +68,35 @@ namespace SimpreRestApiQuestions.Service
 
         public bool DeleteQuestion(int id)
         {
-            string query = $"DELETE FROM question WHERE id = {id}";
+            string queryDeleteWrongAnswers = $"DELETE FROM wrong_answer WHERE id_question = {id}";
+            string queryDeleteQuestion = $"DELETE FROM question WHERE id = {id}";
+
+            MySqlTransaction transaction = null;
+
             try
             {
                 connection.Connect();
-                using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
+                transaction = connection.Connection.BeginTransaction();
+
+                MySqlCommand cmd = new MySqlCommand(queryDeleteWrongAnswers, connection.Connection);
+                cmd.ExecuteNonQuery(); 
+                cmd.CommandText = queryDeleteQuestion;
                 int rowsDeleted = cmd.ExecuteNonQuery();
+
+                transaction.Commit();
                 return rowsDeleted > 0;
             }
             catch (Exception ex)
             {
+                try
+                {
+                    if (transaction != null) transaction.Rollback();
+                }
+                catch (MySqlException mySqlEx)
+                {
+                    throw new Exception("Error during the insert transaction rollback.", mySqlEx);
+                }
+
                 throw new Exception("Fail in DeleteQuestion class QuestionServiceMySql. ", ex);
             }
             finally
@@ -89,7 +109,11 @@ namespace SimpreRestApiQuestions.Service
         {
             try
             {
-                string query = $"SELECT q.*, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four FROM question q JOIN wrong_answer w ON q.id = w.id_question;";
+                string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four"
+                    + "FROM question q"
+                    + "JOIN wrong_answer w ON q.id = w.id_question"
+                    + "JOIN categories c on q.category = c.id;";
+
                 connection.Connect();
                 using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
@@ -102,6 +126,7 @@ namespace SimpreRestApiQuestions.Service
                         Id = reader.GetInt32("id"),
                         Question = reader.GetString("question"),
                         CorrectAnswer = reader.GetString("correct_answer"),
+                        Category = reader.GetString("category"),
                         WrongAnswers = new string[]
                         {
                             reader.GetString("wrong_one"),
@@ -125,7 +150,11 @@ namespace SimpreRestApiQuestions.Service
 
         public QuestionDto GetQuestion(int id)
         {
-            string query = $"SELECT q.*, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four FROM question q JOIN wrong_answer w ON q.id = w.id_question WHERE q.id = {id};";
+            string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four"
+                    + "FROM question q"
+                    + "JOIN wrong_answer w ON q.id = w.id_question"
+                    + "JOIN categories c on q.category = c.id;"
+                    + $"WHERE q.id = {id}";
             try
             {
                 connection.Connect();
@@ -138,6 +167,7 @@ namespace SimpreRestApiQuestions.Service
                     Id = reader.GetInt32("id"),
                     Question = reader.GetString("question"),
                     CorrectAnswer = reader.GetString("correct_answer"),
+                    Category = reader.GetString("category"),
                     WrongAnswers = new string[]
                     {
                         reader.GetString("wrong_one"),
@@ -164,7 +194,7 @@ namespace SimpreRestApiQuestions.Service
             throw new NotImplementedException();
         }
 
-        public int maxQuestionsToRequest()
+        public int MaxQuestionsToRequest()
         {
             string query = "select count(*) from question;";
             try

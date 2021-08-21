@@ -12,5 +12,7 @@ namespace WebApplication2.Dto
         public string[] WrongAnswers { get; set; }
 
         public string CorrectAnswer { get; set; }
+
+        public int IdCategory { get; set; }
     }
 }
