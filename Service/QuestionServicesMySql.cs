@@ -79,12 +79,12 @@ namespace SimpreRestApiQuestions.Service
                 transaction = connection.Connection.BeginTransaction();
 
                 MySqlCommand cmd = new MySqlCommand(queryDeleteWrongAnswers, connection.Connection);
-                cmd.ExecuteNonQuery(); 
+                int rowsDeleted = cmd.ExecuteNonQuery(); 
                 cmd.CommandText = queryDeleteQuestion;
-                int rowsDeleted = cmd.ExecuteNonQuery();
+                int rowsDeletedTwo = cmd.ExecuteNonQuery();
 
                 transaction.Commit();
-                return rowsDeleted > 0;
+                return rowsDeleted > 0 && rowsDeletedTwo > 0;
             }
             catch (Exception ex)
             {
