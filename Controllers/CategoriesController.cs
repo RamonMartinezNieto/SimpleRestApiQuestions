@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using WebApplication2.Dto;
@@ -8,6 +9,7 @@ namespace SimpleRestApiQuestions.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class CategoriesController : Controller
     {
         IQuestionService _questionService;
@@ -19,6 +21,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetCategories")]
+        [AllowAnonymous]
         public ActionResult<CategoryDto> GetCategories() => Ok(_questionService.GetCategories());
 
         /// <summary>
@@ -26,6 +29,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// </summary>
         [HttpPost]
         [Route("CreateCategory")]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateCategory([Required] string category)
         {
             try
@@ -45,6 +49,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// <returns>BadRequest if the category can't be removed because is in use or not exist.</returns>
         [HttpDelete]
         [Route("RemoveCategory")]
+        [Authorize(Roles = "Admin")]
         public ActionResult RemoveCategory(int id)
         {
             try

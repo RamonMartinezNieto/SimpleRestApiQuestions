@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using WebApplication2.Dto;
@@ -8,6 +9,7 @@ namespace WebApplication2.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class QuestionsController : ControllerBase
     {
         IQuestionService _questionService;
@@ -19,6 +21,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetAllQuestions")]
+        [AllowAnonymous]
         public ActionResult<QuestionDto> GetAllQuestions(int categoryId) => Ok(_questionService.GetAllQuestions(categoryId));
 
         /// <summary>
@@ -26,6 +29,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetMaxQuestionsToRequest")]
+        [AllowAnonymous]
         public ActionResult<int> GetMaxQuestionsToRequest([Required] int categoryId) => Ok(_questionService.MaxQuestionsToRequest(categoryId));
 
         /// <summary>
@@ -33,6 +37,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetRandomQuestions")]
+        [AllowAnonymous]
         public ActionResult<QuestionDto> GetRandomQuestions([Required] int quantity, [Required] int categoryId)
         {
             if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest(categoryId)) 
@@ -52,6 +57,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         [HttpGet]
         [Route("GetQuestion/{id:int}")]
+        [AllowAnonymous]
         public ActionResult<int> GetQuestion([Required] int id)
         {
             try {
@@ -67,6 +73,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         [HttpPost]
         [Route("AddQuestion")]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddQuestion([Required] QuestionModelRequest question)
         {
             try
@@ -89,6 +96,7 @@ namespace WebApplication2.Controllers
         /// <response code="400">If the question was not deleted</response>
         [HttpDelete]
         [Route("RemoveQuestion")]
+        [Authorize(Roles = "Admin")]
         public ActionResult RemoveQuestion([Required] int id) 
         {
             try
