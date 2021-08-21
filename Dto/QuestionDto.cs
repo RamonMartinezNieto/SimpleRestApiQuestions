@@ -14,8 +14,8 @@ namespace WebApplication2.Dto
         public string Question { get; set; }
 
         [Required]
-        [MinLength(4)]
-        [MaxLength(4)]
+        [MinLength(3)]
+        [MaxLength(3)]
         public string[] WrongAnswers { get; set; }
 
         [Required]

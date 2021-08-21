@@ -10,7 +10,7 @@ namespace SimpreRestApiQuestions.Service
     public class QuestionServicesMySql : IQuestionService
     {
         private readonly ConnectionDataBase connection;
-        private const string SQL_SELECT_QUESTIONS = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four "
+        private const string SQL_SELECT_QUESTIONS = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three "
                     + "FROM question q "
                     + "JOIN wrong_answer w ON q.id = w.id_question "
                     + "JOIN categories c on q.category = c.id ";
@@ -23,8 +23,8 @@ namespace SimpreRestApiQuestions.Service
         public void CreateQuestion(string question, string[] wrongAnswers, string correctAnswer, int category_id)
         {
             string query = $"INSERT INTO question (question, correct_answer, category) VALUES(@question, @correctAnswer, @category_id); select last_insert_id();";
-            string queryWrongAnswers = $"INSERT INTO wrong_answer (id_question, wrong_one, wrong_two, wrong_three, wrong_four) " +
-                $"VALUES(@id_question, @wrong_one, @wrong_two, @wrong_three, @wrong_four); ";
+            string queryWrongAnswers = $"INSERT INTO wrong_answer (id_question, wrong_one, wrong_two, wrong_three) " +
+                $"VALUES(@id_question, @wrong_one, @wrong_two, @wrong_three); ";
 
             MySqlTransaction transaction = null;
 
@@ -47,7 +47,6 @@ namespace SimpreRestApiQuestions.Service
                 cmd.Parameters.AddWithValue("@wrong_one", wrongAnswers[0]);
                 cmd.Parameters.AddWithValue("@wrong_two", wrongAnswers[1]);
                 cmd.Parameters.AddWithValue("@wrong_three", wrongAnswers[2]);
-                cmd.Parameters.AddWithValue("@wrong_four", wrongAnswers[3]);
                 cmd.ExecuteNonQuery();
 
                 transaction.Commit();
@@ -256,7 +255,6 @@ namespace SimpreRestApiQuestions.Service
                             reader.GetString("wrong_one"),
                             reader.GetString("wrong_two"),
                             reader.GetString("wrong_three"),
-                            reader.GetString("wrong_four")
                     }
                 };
             }
