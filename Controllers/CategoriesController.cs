@@ -5,11 +5,11 @@ using WebApplication2.Service;
 
 namespace SimpleRestApiQuestions.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoriesController : Controller
     {
         IQuestionService _questionService;
 
-        public CategoryController(IQuestionService service) => _questionService = service;
+        public CategoriesController(IQuestionService service) => _questionService = service;
 
         [HttpGet]
         [Route("GetCategories")]
