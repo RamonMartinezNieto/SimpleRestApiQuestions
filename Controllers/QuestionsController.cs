@@ -40,9 +40,9 @@ namespace WebApplication2.Controllers
         [AllowAnonymous]
         public ActionResult<QuestionDto> GetRandomQuestions([Required] int quantity, [Required] int categoryId)
         {
-            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest(categoryId)) 
+            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest(categoryId))
                 return BadRequest($"There aren't {quantity} questions");
-            
+
             try
             {
                 return Ok(_questionService.GetQuestions(quantity, categoryId));
@@ -73,7 +73,7 @@ namespace WebApplication2.Controllers
         /// </summary>
         [HttpPost]
         [Route("AddQuestion")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult AddQuestion([Required] QuestionModelRequest question)
         {
             try
@@ -96,7 +96,7 @@ namespace WebApplication2.Controllers
         /// <response code="400">If the question was not deleted</response>
         [HttpDelete]
         [Route("RemoveQuestion")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult RemoveQuestion([Required] int id) 
         {
             try

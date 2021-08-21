@@ -29,7 +29,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// </summary>
         [HttpPost]
         [Route("CreateCategory")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult CreateCategory([Required] string category)
         {
             try
@@ -49,7 +49,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// <returns>BadRequest if the category can't be removed because is in use or not exist.</returns>
         [HttpDelete]
         [Route("RemoveCategory")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult RemoveCategory(int id)
         {
             try
