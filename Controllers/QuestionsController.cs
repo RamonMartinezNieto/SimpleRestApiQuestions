@@ -33,14 +33,15 @@ namespace WebApplication2.Controllers
         [Route("GetNumberOfQuestions")]
         public ActionResult<QuestionDto> GetNumberOfQuestions([Required] int quantity)
         {
-            if (quantity == 0) return BadRequest("Indica una cantidad válida");
-
+            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest()) 
+                return BadRequest($"There aren't {quantity} questions");
+            
             try
             {
                 return Ok(_questionService.GetQuestions(quantity));
             }
             catch {
-                return BadRequest("No hay tantas preguntas");
+                return BadRequest("A problem was occur");
             }
         }
 

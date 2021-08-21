@@ -10,6 +10,10 @@ namespace SimpreRestApiQuestions.Service
     public class QuestionServicesMySql : IQuestionService
     {
         private readonly ConnectionDataBase connection;
+        private const string SQL_SELECT_QUESTIONS = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four "
+                    + "FROM question q "
+                    + "JOIN wrong_answer w ON q.id = w.id_question "
+                    + "JOIN categories c on q.category = c.id ";
 
         public QuestionServicesMySql()
         {
@@ -109,34 +113,14 @@ namespace SimpreRestApiQuestions.Service
         {
             try
             {
-                string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four "
-                    + "FROM question q "
-                    + "JOIN wrong_answer w ON q.id = w.id_question "
-                    + "JOIN categories c on q.category = c.id;";
+                string query = SQL_SELECT_QUESTIONS;
 
                 connection.Connect();
                 using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
 
-                List<QuestionDto> listQuestions = new List<QuestionDto>();
-                while (reader.Read())
-                {
-                    listQuestions.Add(new QuestionDto
-                    {
-                        Id = reader.GetInt32("id"),
-                        Question = reader.GetString("question"),
-                        CorrectAnswer = reader.GetString("correct_answer"),
-                        Category = reader.GetString("category"),
-                        WrongAnswers = new string[]
-                        {
-                            reader.GetString("wrong_one"),
-                            reader.GetString("wrong_two"),
-                            reader.GetString("wrong_three"),
-                            reader.GetString("wrong_four")
-                        }
-                    });
-                }
-                return listQuestions.AsEnumerable();
+                return GetQuestionsFromReader(reader).AsEnumerable();
+
             }
             catch (Exception ex)
             {
@@ -180,33 +164,14 @@ namespace SimpreRestApiQuestions.Service
 
         public QuestionDto GetQuestion(int id)
         {
-            string query = "SELECT q.id, c.name as category, q.question, q.correct_answer, w.wrong_one, w.wrong_two, w.wrong_three, w.wrong_four"
-                    + "FROM question q"
-                    + "JOIN wrong_answer w ON q.id = w.id_question"
-                    + "JOIN categories c on q.category = c.id;"
-                    + $"WHERE q.id = {id}";
+            string query = SQL_SELECT_QUESTIONS + $"WHERE q.id = {id}";
             try
             {
                 connection.Connect();
                 using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
                 using MySqlDataReader reader = cmd.ExecuteReader();
-
                 reader.Read();
-                return new QuestionDto
-                {
-                    Id = reader.GetInt32("id"),
-                    Question = reader.GetString("question"),
-                    CorrectAnswer = reader.GetString("correct_answer"),
-                    Category = reader.GetString("category"),
-                    WrongAnswers = new string[]
-                    {
-                        reader.GetString("wrong_one"),
-                        reader.GetString("wrong_two"),
-                        reader.GetString("wrong_three"),
-                        reader.GetString("wrong_four")
-                    }
-                };
-
+                return GetQuestionFromReader(reader);
             }
             catch (Exception ex)
             {
@@ -220,8 +185,23 @@ namespace SimpreRestApiQuestions.Service
 
         public IEnumerable<QuestionDto> GetQuestions(int quantity)
         {
-            //TODO
-            throw new NotImplementedException();
+            try
+            {
+                string query = SQL_SELECT_QUESTIONS + $" ORDER BY RAND() LIMIT {quantity}";
+                connection.Connect();
+                using MySqlCommand cmd = new MySqlCommand(query, connection.Connection);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                return GetQuestionsFromReader(reader).AsEnumerable();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fail in GetAllQuestions class QuestionServiceMySql. ", ex);
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
 
 
@@ -241,6 +221,48 @@ namespace SimpreRestApiQuestions.Service
             finally
             {
                 CloseConnection();
+            }
+        }
+
+        private List<QuestionDto> GetQuestionsFromReader(MySqlDataReader reader) 
+        {
+            try
+            {
+                List<QuestionDto> listQuestions = new List<QuestionDto>();
+                while (reader.Read())
+                {
+                    listQuestions.Add(GetQuestionFromReader(reader));
+                }
+                return listQuestions;
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception("Error getting questionDto from Reader", ex);
+            }
+        }
+
+        private QuestionDto GetQuestionFromReader(MySqlDataReader reader) 
+        {
+            try
+            {
+                return new QuestionDto
+                {
+                    Id = reader.GetInt32("id"),
+                    Question = reader.GetString("question"),
+                    CorrectAnswer = reader.GetString("correct_answer"),
+                    Category = reader.GetString("category"),
+                    WrongAnswers = new string[]
+                    {
+                            reader.GetString("wrong_one"),
+                            reader.GetString("wrong_two"),
+                            reader.GetString("wrong_three"),
+                            reader.GetString("wrong_four")
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error getting questionDto from Reader", ex);
             }
         }
 
