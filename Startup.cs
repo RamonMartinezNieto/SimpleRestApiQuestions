@@ -60,8 +60,8 @@ namespace WebApplication2
             });
 
             //sk
-            //var llave = System.Text.Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SK"));
-            /*
+            var llave = System.Text.Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SK"));
+
             //jwt
             services.AddAuthentication(d => //Agregamos autentificación de JWT, le decimos al .Net que coja la autentificación con JWT
             {
@@ -80,7 +80,7 @@ namespace WebApplication2
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            });*/
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
