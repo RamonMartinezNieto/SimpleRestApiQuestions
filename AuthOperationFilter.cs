@@ -11,29 +11,28 @@ namespace SimpleRestApiQuestions
 {
     class AuthOperationFilter : IOperationFilter
     {
-        public void Apply(OpenApiOperation operation, OperationFilterContext context)
-        {
-            var noAuthRequired = context.ApiDescription.CustomAttributes().Any(attr => attr.GetType() == typeof(AllowAnonymousAttribute));
-
-            if (noAuthRequired) return;
-
-            operation.Security = new List<OpenApiSecurityRequirement>
-        {
-            new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "basic"
-                        }
-                    },
-                    new List<string>()
-                }
-            }
-        };
-        }
-    }
+		public void Apply(OpenApiOperation operation, OperationFilterContext ctx)
+		{
+			if (ctx.ApiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
+			{
+				// If not [AllowAnonymous] and [Authorize] on either the endpoint or the controller...
+				if (!ctx.ApiDescription.CustomAttributes().Any((a) => a is AllowAnonymousAttribute)
+					&& (ctx.ApiDescription.CustomAttributes().Any((a) => a is AuthorizeAttribute)
+						|| descriptor.ControllerTypeInfo.GetCustomAttribute<AuthorizeAttribute>() != null))
+				{
+					operation.Security.Add(new OpenApiSecurityRequirement
+					{
+						[new OpenApiSecurityScheme
+						{
+							Reference = new OpenApiReference
+							{
+								Type = ReferenceType.SecurityScheme,
+								Id = ...,
+							},
+						}] = Array.Empty<string>()
+					});
+				}
+			}
+		}
+	}
 }
