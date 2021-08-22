@@ -10,18 +10,18 @@ namespace WebApplication2.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class QuestionsController : ControllerBase
+    public class QuestionController : ControllerBase
     {
         IQuestionService _questionService;
 
-        public QuestionsController(IQuestionService service) => _questionService = service;
+        public QuestionController(IQuestionService service) => _questionService = service;
 
         /// <summary>
         /// Get all questions in the repository of specific category.
         /// </summary>
         /// <response code="200">Returns all questions'content of the category specified</response>
         [HttpGet]
-        [Route("GetAllQuestions")]
+        [Route("AllQuestions")]
         [AllowAnonymous]
         public ActionResult<QuestionDto> GetAllQuestions(int categoryId) => Ok(_questionService.GetAllQuestions(categoryId));
 
@@ -29,9 +29,9 @@ namespace WebApplication2.Controllers
         /// Get max number of questions for a specific category. 
         /// </summary>
         [HttpGet]
-        [Route("GetMaxQuestionsToRequest")]
+        [Route("{id_category:int}/MaxQuestionsToRequest")]
         [AllowAnonymous]
-        public ActionResult<int> GetMaxQuestionsToRequest([Required] int categoryId) => Ok(_questionService.MaxQuestionsToRequest(categoryId));
+        public ActionResult<int> GetMaxQuestionsToRequest([Required] int id_category) => Ok(_questionService.MaxQuestionsToRequest(id_category));
 
         /// <summary>
         /// Get random questions from specified category. 
@@ -40,16 +40,16 @@ namespace WebApplication2.Controllers
         /// <response code="400">Some problem was occur with the category Id or the data base</response>
         /// <response code="401">Unauthorized Jason Web Token</response>
         [HttpGet]
-        [Route("GetRandomQuestions")]
+        [Route("{id_category:int}/RandomQuestions/{quantity:int}")]
         [AllowAnonymous]
-        public ActionResult<QuestionDto> GetRandomQuestions([Required] int quantity, [Required] int categoryId)
+        public ActionResult<QuestionDto> GetRandomQuestions([Required] int quantity, [Required] int id_category)
         {
-            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest(categoryId))
+            if (quantity == 0 || quantity > _questionService.MaxQuestionsToRequest(id_category))
                 return BadRequest($"There aren't {quantity} questions");
 
             try
             {
-                return Ok(_questionService.GetQuestions(quantity, categoryId));
+                return Ok(_questionService.GetQuestions(quantity, id_category));
             }
             catch {
                 return BadRequest("A problem was occur");
@@ -62,7 +62,7 @@ namespace WebApplication2.Controllers
         /// <response code="200">Retur question content</response>
         /// <response code="204">There aren't conent with the specified question id</response>
         [HttpGet]
-        [Route("GetQuestion/{id:int}")]
+        [Route("{id:int}")]
         [AllowAnonymous]
         public ActionResult<int> GetQuestion([Required] int id)
         {
@@ -81,7 +81,6 @@ namespace WebApplication2.Controllers
         /// <response code="401">Unauthorized Jason Web Token</response>
         /// <response code="400">Quiestion not added, trying to insert invalid question data</response>
         [HttpPost]
-        [Route("AddQuestion")]
         [Authorize(Roles = "admin")]
         public ActionResult AddQuestion([Required] QuestionModelRequest question)
         {
@@ -105,7 +104,6 @@ namespace WebApplication2.Controllers
         /// <response code="400">If the question was not deleted</response>
         /// <response code="401">Unauthorized Jason Web Token</response>
         [HttpDelete]
-        [Route("RemoveQuestion")]
         [Authorize(Roles = "admin")]
         public ActionResult RemoveQuestion([Required] int id) 
         {

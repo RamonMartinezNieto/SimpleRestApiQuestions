@@ -40,3 +40,10 @@ C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQ
 C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQuestions.genruntimeconfig.cache
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\SimpleRestApiQuestions.xml
 C:\Users\RMN\source\repos\WebApplication2\obj\Debug\netcoreapp3.1\SimpleRestApiQuestions.xml
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
