@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using SimpleRestApiQuestions;
 using SimpreRestApiQuestions.Service;
@@ -32,58 +34,6 @@ namespace WebApplication2
             services.AddControllers();
             services.AddScoped<IQuestionService, QuestionServicesMySql>();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1.0.0",
-                    Title = $"Questions API v1",
-                    Description = "API To get and create questions, created only to practice.",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Ramon Martinez (back-end dev)",
-                        Email = "ramon.martinez.nieto@gmail.com",
-                        Url = new Uri(@"https://www.ramonmartineznieto.com")
-                    },
-                });
-
-                c.UseAllOfToExtendReferenceSchemas();
-
-                //Get XML file and include it
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "basic" }
-                        }, new List<string>() }
-                });
-
-                //Add security parameter in the swagger documentation
-                c.AddSecurityDefinition("JWT Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n"+
-                      "Enter 'Bearer' [space] and then your token in the text input below."+
-                      "\r\n\r\nExample: 'Bearer 12345abcdef'",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "bearer"
-                });
-                
-                //Add Custom filter to know how methods need a padlock
-                c.OperationFilter<AuthOperationFilter>();
-            });
-
-            //sk
-            var llave = System.Text.Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SK"));
-
             //jwt
             services.AddAuthentication(d => //Agregamos autentificación de JWT, le decimos al .Net que coja la autentificación con JWT
             {
@@ -98,10 +48,55 @@ namespace WebApplication2
                 {
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(llave),
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        System.Text.Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_SK"))),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+            
+            //Swagger Gen
+            services.AddSwaggerGen(c =>
+            {
+                //Basic swagger doc
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = $"Questions API v1",
+                    Description = "API To get and create questions, created only to practice.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ramon Martinez (back-end dev)",
+                        Email = "ramon.martinez.nieto@gmail.com",
+                        Url = new Uri(@"https://www.ramonmartineznieto.com")
+                    },
+                });
+                c.UseAllOfToExtendReferenceSchemas();
+
+                //Get XML file and include it
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
+                //Add custom operation filter (for the padlock and etc..) 
+                c.OperationFilter<AuthOperationFilter>();
+
+                //Add Scheme and configure box 
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Authentication",
+                    Description = "Enter JWT Bearer token **_only_**",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Id = "bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
             });
         }
 
@@ -114,7 +109,8 @@ namespace WebApplication2
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Questions API V1");
                 c.ShowExtensions();
                 c.ShowCommonExtensions();
