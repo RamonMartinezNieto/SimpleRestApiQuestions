@@ -10,6 +10,7 @@ using SimpleRestApiQuestions;
 using SimpreRestApiQuestions.Service;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using WebApplication2.Service;
@@ -52,6 +53,17 @@ namespace WebApplication2
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "basic" }
+                        }, new List<string>() }
+                });
 
                 //Add security parameter in the swagger documentation
                 c.AddSecurityDefinition("JWT Bearer", new OpenApiSecurityScheme
