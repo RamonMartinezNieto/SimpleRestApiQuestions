@@ -5,12 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
+using SimpleRestApiQuestions;
 using SimpreRestApiQuestions.Service;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using WebApplication2.Service;
@@ -32,31 +31,42 @@ namespace WebApplication2
             services.AddControllers();
             services.AddScoped<IQuestionService, QuestionServicesMySql>();
 
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1.0.0",
                     Title = $"Questions API v1",
                     Description = "API To get and create questions, created only to practice.",
-                    //TermsOfService = new Uri("https://www.ramonmartineznieto.com"),
                     Contact = new OpenApiContact
                     {
                         Name = "Ramon Martinez (back-end dev)",
                         Email = "ramon.martinez.nieto@gmail.com",
                         Url = new Uri(@"https://www.ramonmartineznieto.com")
                     },
-                    //TODO add second contact
-                    //License = new OpenApiLicense
-                    //{
-                    //    Name = "MIT License"
-                    //},
                 });
+
                 c.UseAllOfToExtendReferenceSchemas();
 
                 //Get XML file and include it
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                //Add security parameter in the swagger documentation
+                c.AddSecurityDefinition("JWT Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n"+
+                      "Enter 'Bearer' [space] and then your token in the text input below."+
+                      "\r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "bearer"
+                });
+                
+                //Add Custom filter to know how methods need a padlock
+                c.OperationFilter<AuthOperationFilter>();
             });
 
             //sk
@@ -96,6 +106,8 @@ namespace WebApplication2
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Questions API V1");
                 c.ShowExtensions();
                 c.ShowCommonExtensions();
+                c.DocExpansion(DocExpansion.List);
+
             });
 
             app.UseHttpsRedirection();
