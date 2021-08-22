@@ -11,28 +11,50 @@ namespace SimpleRestApiQuestions
 {
     class AuthOperationFilter : IOperationFilter
     {
-		public void Apply(OpenApiOperation operation, OperationFilterContext ctx)
-		{
-			if (ctx.ApiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
-			{
-				// If not [AllowAnonymous] and [Authorize] on either the endpoint or the controller...
-				if (!ctx.ApiDescription.CustomAttributes().Any((a) => a is AllowAnonymousAttribute)
-					&& (ctx.ApiDescription.CustomAttributes().Any((a) => a is AuthorizeAttribute)
-						|| descriptor.ControllerTypeInfo.GetCustomAttribute<AuthorizeAttribute>() != null))
-				{
-					operation.Security.Add(new OpenApiSecurityRequirement
-					{
-						[new OpenApiSecurityScheme
-						{
-							Reference = new OpenApiReference
-							{
-								Type = ReferenceType.SecurityScheme,
-								Id = ...,
-							},
-						}] = Array.Empty<string>()
-					});
-				}
-			}
-		}
-	}
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            //When No Auth is required
+            var noAuthRequired = context.ApiDescription.CustomAttributes().Any(attr => attr.GetType() == typeof(AllowAnonymousAttribute));
+            if (noAuthRequired) return;
+
+
+            //When Auth is required
+            var attributes = context.MethodInfo.DeclaringType.GetCustomAttributes(true)
+                                    .Union(context.MethodInfo.GetCustomAttributes(true))
+                                    .OfType<AuthorizeAttribute>();
+
+            if (attributes != null && attributes.Count() > 0)
+            {
+                var attr = attributes.ToList()[0];
+
+                // Add what should be show inside the security section
+                IList<string> securityInfos = new List<string>();
+                securityInfos.Add($"{nameof(AuthorizeAttribute.Policy)}:{attr.Policy}");
+                securityInfos.Add($"{nameof(AuthorizeAttribute.Roles)}:{attr.Roles}");
+                securityInfos.Add($"{nameof(AuthorizeAttribute.AuthenticationSchemes)}:{attr.AuthenticationSchemes}");
+
+                operation.Security = new List<OpenApiSecurityRequirement>()
+                    {
+                        new OpenApiSecurityRequirement()
+                        {
+                            {
+                                new OpenApiSecurityScheme
+                                {
+                                    Reference = new OpenApiReference
+                                    {
+                                        Id = "bearer", // Must fit the defined Id of SecurityDefinition in global configuration
+                                        Type = ReferenceType.SecurityScheme
+                                    }
+                                },
+                                securityInfos
+                            }
+                        }
+                    };
+            }
+            else
+            {
+                operation.Security.Clear();
+            }
+        }
+    }
 }
