@@ -10,20 +10,20 @@ namespace SimpleRestApiQuestions.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class CategoriesController : Controller
+    public class CategoryController : Controller
     {
         IQuestionService _questionService;
 
-        public CategoriesController(IQuestionService service) => _questionService = service;
+        public CategoryController(IQuestionService service) => _questionService = service;
 
         /// <summary>
         /// Get all categories that can be used to create a new questions. 
         /// </summary>
         /// <response code="200">Return response with the categories</response>
         [HttpGet]
-        [Route("GetCategories")]
+        [Route("Categories")]
         [AllowAnonymous]
-        public ActionResult<CategoryDto> GetCategories() => Ok(_questionService.GetCategories());
+        public ActionResult<CategoryDto> Categories() => Ok(_questionService.GetCategories());
 
         /// <summary>
         /// Create a new category into the repository.
@@ -32,9 +32,8 @@ namespace SimpleRestApiQuestions.Controllers
         /// <response code="401">Unauthorized Jason Web Token</response>
         /// <response code="400">If the category was not added</response>
         [HttpPost]
-        [Route("CreateCategory")]
         [Authorize(Roles = "admin")]
-        public ActionResult CreateCategory([Required] string category)
+        public ActionResult Category([Required] string category)
         {
             try
             {
@@ -56,9 +55,8 @@ namespace SimpleRestApiQuestions.Controllers
         /// <response code="401">Unauthorized Jason Web Token</response>
         /// <response code="400">If the category was not deleted</response>
         [HttpDelete]
-        [Route("RemoveCategory")]
         [Authorize(Roles = "admin")]
-        public ActionResult RemoveCategory(int id)
+        public ActionResult Category(int id)
         {
             try
             {
