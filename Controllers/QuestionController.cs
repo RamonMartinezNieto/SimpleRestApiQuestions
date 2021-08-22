@@ -21,9 +21,9 @@ namespace WebApplication2.Controllers
         /// </summary>
         /// <response code="200">Returns all questions'content of the category specified</response>
         [HttpGet]
-        [Route("AllQuestions")]
+        [Route("{id_category:int}/AllQuestions")]
         [AllowAnonymous]
-        public ActionResult<QuestionDto> GetAllQuestions(int categoryId) => Ok(_questionService.GetAllQuestions(categoryId));
+        public ActionResult<QuestionDto> GetAllQuestions(int id_category) => Ok(_questionService.GetAllQuestions(id_category));
 
         /// <summary>
         /// Get max number of questions for a specific category. 

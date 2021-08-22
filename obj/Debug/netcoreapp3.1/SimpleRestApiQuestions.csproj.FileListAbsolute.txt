@@ -47,3 +47,9 @@ C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.Iden
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Scrutor.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\System.Text.Json.dll
