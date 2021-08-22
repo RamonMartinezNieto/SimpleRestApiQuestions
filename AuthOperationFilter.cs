@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -10,28 +11,29 @@ namespace SimpleRestApiQuestions
 {
     class AuthOperationFilter : IOperationFilter
     {
-        public void Apply(OpenApiOperation operation, OperationFilterContext ctx)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (ctx.ApiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
+            var noAuthRequired = context.ApiDescription.CustomAttributes().Any(attr => attr.GetType() == typeof(AllowAnonymousAttribute));
+
+            if (noAuthRequired) return;
+
+            operation.Security = new List<OpenApiSecurityRequirement>
+        {
+            new OpenApiSecurityRequirement
             {
-                // If not [AllowAnonymous] and [Authorize] on either the endpoint or the controller...
-                if (!ctx.ApiDescription.CustomAttributes().Any((a) => a is AllowAnonymousAttribute)
-                    && (ctx.ApiDescription.CustomAttributes().Any((a) => a is AuthorizeAttribute)
-                        || descriptor.ControllerTypeInfo.GetCustomAttribute<AuthorizeAttribute>() != null))
                 {
-                    operation.Security.Add(new OpenApiSecurityRequirement
+                    new OpenApiSecurityScheme
                     {
-                        [new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "bearer",
-                            },
-                        }] = Array.Empty<string>()
-                    });
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "basic"
+                        }
+                    },
+                    new List<string>()
                 }
             }
+        };
         }
     }
 }
