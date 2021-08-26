@@ -21,6 +21,8 @@ namespace WebApplication2
 {
     public class Startup
     {
+        private const string _MyCorsPolicy = "RestPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -98,6 +100,17 @@ namespace WebApplication2
                 };
                 c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _MyCorsPolicy, builder =>
+                {
+                    builder.WithOrigins("https://localhost:44385/")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                }
+                );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -125,6 +138,8 @@ namespace WebApplication2
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseCors(_MyCorsPolicy);
 
             app.UseEndpoints(endpoints =>
             {
