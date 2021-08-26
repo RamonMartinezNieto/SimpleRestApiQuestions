@@ -105,9 +105,13 @@ namespace WebApplication2
             {
                 options.AddPolicy(name: _MyCorsPolicy, builder =>
                 {
-                    builder.WithOrigins("https://localhost:44385/")
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
+                    
+                    //builder.WithOrigins("https://localhost:44385/")
+                    //    .AllowAnyHeader()
+                    //    .AllowAnyMethod();
                 }
                 );
             });
