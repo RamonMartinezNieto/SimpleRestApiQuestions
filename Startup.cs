@@ -108,12 +108,10 @@ namespace WebApplication2
                     builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                    
-                    //builder.WithOrigins("https://localhost:44385/")
-                    //    .AllowAnyHeader()
-                    //    .AllowAnyMethod();
-                }
-                );
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "quiz-questions-front.herokuapp.com")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
         }
 
