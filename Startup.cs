@@ -105,13 +105,9 @@ namespace WebApplication2
             {
                 options.AddPolicy(name: _MyCorsPolicy, builder =>
                 {
-                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                    builder.WithOrigins("localhost", "quiz-questions-front.herokuapp.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                   //TODO
-                    // builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "quiz-questions-front.herokuapp.com")
-                     //   .AllowAnyHeader()
-                     //   .AllowAnyMethod();
                 });
             });
         }
