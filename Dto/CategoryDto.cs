@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication2.Dto
+namespace SimpleRestApiQuestions.Dto
 {
     public class CategoryDto
     {

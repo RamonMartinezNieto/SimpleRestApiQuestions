@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
-using WebApplication2.Dto;
-using WebApplication2.Service;
+using SimpleRestApiQuestions.Dto;
+using SimpleRestApiQuestions.Service;
 
-namespace WebApplication2.Controllers
+namespace SimpleRestApiQuestions.Controllers
 {
     [ApiController]
     [Route("[controller]")]

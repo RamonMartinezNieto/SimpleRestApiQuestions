@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 
-namespace SimpreRestApiQuestions
+namespace SimpreRestApiQuestions.DataBase
 {
     public class ConnectionDataBase
     {
