@@ -1,7 +1,6 @@
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\SimpleRestApiQuestions.exe
-C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\Resources\QuestionsRepository.json
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\SimpleRestApiQuestions.deps.json
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\SimpleRestApiQuestions.runtimeconfig.json
 C:\Users\RMN\source\repos\WebApplication2\bin\Debug\netcoreapp3.1\SimpleRestApiQuestions.runtimeconfig.dev.json

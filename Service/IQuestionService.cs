@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WebApplication2.Dto;
+using SimpleRestApiQuestions.Dto;
 
-namespace WebApplication2.Service
+namespace SimpleRestApiQuestions.Service
 {
     public interface IQuestionService
     {

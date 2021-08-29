@@ -27,18 +27,18 @@
             <response code="401">Unauthorized Jason Web Token</response>
             <response code="400">If the category was not deleted</response>
         </member>
-        <member name="M:WebApplication2.Controllers.QuestionController.GetAllQuestions(System.Int32)">
+        <member name="M:SimpleRestApiQuestions.Controllers.QuestionController.GetAllQuestions(System.Int32)">
             <summary>
             Get all questions in the repository of specific category.
             </summary>
             <response code="200">Returns all questions'content of the category specified</response>
         </member>
-        <member name="M:WebApplication2.Controllers.QuestionController.GetMaxQuestionsToRequest(System.Int32)">
+        <member name="M:SimpleRestApiQuestions.Controllers.QuestionController.GetMaxQuestionsToRequest(System.Int32)">
             <summary>
             Get max number of questions for a specific category. 
             </summary>
         </member>
-        <member name="M:WebApplication2.Controllers.QuestionController.GetRandomQuestions(System.Int32,System.Int32)">
+        <member name="M:SimpleRestApiQuestions.Controllers.QuestionController.GetRandomQuestions(System.Int32,System.Int32)">
             <summary>
             Get random questions from specified category. 
             </summary>
@@ -46,14 +46,14 @@
             <response code="400">Some problem was occur with the category Id or the data base</response>
             <response code="401">Unauthorized Jason Web Token</response>
         </member>
-        <member name="M:WebApplication2.Controllers.QuestionController.GetQuestion(System.Int32)">
+        <member name="M:SimpleRestApiQuestions.Controllers.QuestionController.GetQuestion(System.Int32)">
             <summary>
             Get specifiec Question.
             </summary>
             <response code="200">Retur question content</response>
             <response code="204">There aren't conent with the specified question id</response>
         </member>
-        <member name="M:WebApplication2.Controllers.QuestionController.AddQuestion(WebApplication2.Dto.QuestionModelRequest)">
+        <member name="M:SimpleRestApiQuestions.Controllers.QuestionController.AddQuestion(SimpleRestApiQuestions.Dto.QuestionModelRequest)">
             <summary>
             Create a new question. 
             </summary>
@@ -61,7 +61,7 @@
             <response code="401">Unauthorized Jason Web Token</response>
             <response code="400">Quiestion not added, trying to insert invalid question data</response>
         </member>
-        <member name="M:WebApplication2.Controllers.QuestionController.RemoveQuestion(System.Int32)">
+        <member name="M:SimpleRestApiQuestions.Controllers.QuestionController.RemoveQuestion(System.Int32)">
             <summary>
             Delete specific question.
             </summary>
