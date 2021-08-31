@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApplication2\SimpleRestApiQuestions.csproj" />
+    <ProjectReference Include="..\SimpleRestApiQuestions\SimpleRestApiQuestions.csproj" />
   </ItemGroup>
 
 </Project>
