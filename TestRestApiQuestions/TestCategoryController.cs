@@ -69,7 +69,7 @@ namespace TestRestSimpleRestApiQuestions.Service
 
         [Test]
         public void Test_Create_Category_BadRequest()
-        {
+        { 
             CategoryController controller = new CategoryController(serviceMock.Object);
 
             ActionResult result = controller.Category("BadRequest");
