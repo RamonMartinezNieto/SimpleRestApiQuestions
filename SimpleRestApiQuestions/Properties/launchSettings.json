@@ -13,7 +13,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true
     },
-    "SimpleRestApiQuestions": {
+    "WebApplication2": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

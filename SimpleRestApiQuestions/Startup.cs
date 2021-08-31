@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using SimpleRestApiQuestions.Service;
+using System.Threading.Tasks;
 
 namespace WebApplication2
 {
@@ -127,7 +128,7 @@ namespace WebApplication2
                 c.ShowExtensions();
                 c.ShowCommonExtensions();
                 c.DocExpansion(DocExpansion.List);
-
+                c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
@@ -139,10 +140,6 @@ namespace WebApplication2
             app.UseAuthorization();
 
             app.UseCors(_MyCorsPolicy);
-
-            app.Run(async context => {
-                context.Response.Redirect("swagger");
-            });
 
             app.UseEndpoints(endpoints =>
             {
