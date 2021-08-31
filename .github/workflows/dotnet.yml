@@ -23,38 +23,6 @@ jobs:
     - name: Build
       working-directory: SimpleRestApiQuestions
       run: dotnet build --no-restore
-
-  testing:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-    - name: Passing Tests
+    - name: Test
       working-directory: SimpleRestApiQuestions
       run: dotnet test --no-build --verbosity normal
-  
-  merge-branch:
-    needs: [build, testing]
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@master
-    
-    - name: Set Git config
-      run: |
-          git config --local user.email "ramon.martinez.nieto@gmail.com"
-          git config --local user.name "Github Actions"
-
-    - name: Merge -> master
-      run: |
-          git fetch --unshallow
-          git checkout devlop
-          git pull
-          git merge --no-ff master -m "Auto-merge master back to dev"
-          git push
-  
