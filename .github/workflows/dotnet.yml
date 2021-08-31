@@ -18,8 +18,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
+      working-directory: SimpleRestApiQuestions
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+      working-directory: SimpleRestApiQuestions
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: SimpleRestApiQuestions
