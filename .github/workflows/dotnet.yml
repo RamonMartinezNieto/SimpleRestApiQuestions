@@ -24,4 +24,5 @@ jobs:
       working-directory: SimpleRestApiQuestions
       run: dotnet build --no-restore
     - name: Test
+      working-directory: SimpleRestApiQuestions
       run: dotnet test --no-build --verbosity normal
