@@ -140,6 +140,10 @@ namespace WebApplication2
 
             app.UseCors(_MyCorsPolicy);
 
+            app.Run(async context => {
+                context.Response.Redirect("swagger");
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
