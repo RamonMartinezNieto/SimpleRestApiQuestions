@@ -5,3 +5,5 @@
 #[Bb]uild/
 .vs/
 *.TMP
+
+Properties/*
