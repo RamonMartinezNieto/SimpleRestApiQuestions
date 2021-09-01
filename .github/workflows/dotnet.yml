@@ -16,7 +16,7 @@ on:
         default: 'Manual build'
 
 env:
-  DOTNET_VERSION: '5.0.x' # set this to the dot net version to use
+  DOTNET_VERSION: '6.0.100-preview.7.21379.14' # set this to the dot net version to use
   
 jobs:
   build:
