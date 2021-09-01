@@ -122,13 +122,13 @@ namespace WebApplication2
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(UiOptions =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Questions API V1");
-                c.ShowExtensions();
-                c.ShowCommonExtensions();
-                c.DocExpansion(DocExpansion.List);
-                c.RoutePrefix = string.Empty;
+                UiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Questions API V1");
+                UiOptions.ShowExtensions();
+                UiOptions.ShowCommonExtensions();
+                UiOptions.DocExpansion(DocExpansion.List);
+                UiOptions.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
