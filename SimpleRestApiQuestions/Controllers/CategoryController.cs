@@ -31,7 +31,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// </summary>
         /// <response code="200">Return response with the categories</response>
         [HttpGet]
-        [Route("Version/{id:int}")]
+        [Route("Version/{idCategory:int}")]
         [AllowAnonymous]
         public ActionResult<int> VersionCategory([Required] int idCategory) {
 
