@@ -229,7 +229,7 @@ namespace SimpreRestApiQuestions.Service
 
         public int CreateCategory(string category)
         {
-            string query = $"INSERT INTO categories (name, version) VALUES(@name_category, 1); select last_insert_id();";
+            string query = $"INSERT INTO categories (name, _version) VALUES(@name_category, 1); select last_insert_id();";
 
             try
             {
