@@ -229,7 +229,7 @@ namespace SimpreRestApiQuestions.Service
 
         public int CreateCategory(string category)
         {
-            string query = $"INSERT INTO categories (name, version) VALUES(@name_category, 0); select last_insert_id();";
+            string query = $"INSERT INTO categories (name, version) VALUES(@name_category, 1); select last_insert_id();";
 
             try
             {
@@ -335,6 +335,29 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
+        public int GetCategoryVersion(int idCategory)
+        {
+            string queryGetCurrentVersion = $"SELECT c._version as version FROM categories c where id = @category_id_version;";
+            connection.Connect();
+            try
+            {
+                using MySqlCommand cmd = connection.Connection.CreateCommand();
+                cmd.CommandText = queryGetCurrentVersion;
+                cmd.Parameters.AddWithValue("@category_id_version", idCategory);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return reader.GetInt32("version");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Is not possible to get the version!", ex);
+            }
+            finally 
+            {
+                CloseConnection();
+            }
+        }
+
         private void CloseConnection()
         {
             try
@@ -346,6 +369,5 @@ namespace SimpreRestApiQuestions.Service
                 throw ex;
             }
         }
-
     }
 }
