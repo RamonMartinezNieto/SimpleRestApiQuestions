@@ -22,5 +22,7 @@ namespace SimpleRestApiQuestions.Service
         int CreateCategory(string category);
 
         bool DeleteCategory(int id);
+
+        int GetCategoryVersion(int idCategory);
     }
 }
