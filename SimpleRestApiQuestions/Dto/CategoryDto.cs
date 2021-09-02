@@ -9,5 +9,7 @@ namespace SimpleRestApiQuestions.Dto
 
         [Required]
         public string Name { get; set; }
+        
+        public int NumberOfQuestions { get; set; }
     }
 }

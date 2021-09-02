@@ -23,11 +23,13 @@ namespace TestRestSimpleRestApiQuestions.Service
                 new CategoryDto
                 {
                     Id = 5,
-                    Name = "Java"
+                    Name = "Java",
+                    NumberOfQuestions = 10
                 }, new CategoryDto
                 {
                     Id = 15,
-                    Name = "CSharp"
+                    Name = "CSharp",
+                    NumberOfQuestions = 5
                 }});
 
             serviceMock.Setup(b => b.CreateCategory(It.IsAny<string>())).Returns(25);
@@ -52,6 +54,12 @@ namespace TestRestSimpleRestApiQuestions.Service
             Assert.That(listCategoriesResult, Has.Exactly(2).Items);
             Assert.That(listCategoriesResult, Has.Exactly(1).Matches<CategoryDto>( c => c.Id == 5));
             Assert.That(listCategoriesResult, Has.Exactly(1).Matches<CategoryDto>(c => c.Id == 15));
+
+            Assert.That(listCategoriesResult, Has.Exactly(1).Matches<CategoryDto>(c => c.NumberOfQuestions == 10));
+            Assert.That(listCategoriesResult, Has.Exactly(1).Matches<CategoryDto>(c => c.NumberOfQuestions == 5));
+
+            Assert.That(listCategoriesResult, Has.Exactly(1).Matches<CategoryDto>(c => c.Name == "Java"));
+            Assert.That(listCategoriesResult, Has.Exactly(1).Matches<CategoryDto>(c => c.Name == "CSharp"));
 
             serviceMock.Verify(a=> a.GetCategories());
         }

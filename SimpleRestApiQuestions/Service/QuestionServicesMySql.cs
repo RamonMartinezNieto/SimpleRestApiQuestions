@@ -26,6 +26,8 @@ namespace SimpreRestApiQuestions.Service
             string query = $"INSERT INTO question (question, correct_answer, category) VALUES(@question, @correctAnswer, @category_id); select last_insert_id();";
             string queryWrongAnswers = $"INSERT INTO wrong_answer (id_question, wrong_one, wrong_two, wrong_three) " +
                 $"VALUES(@id_question, @wrong_one, @wrong_two, @wrong_three); ";
+            string queryGetCurrentVersion = $"SELECT c._version as version FROM categories c where id = @category_id_version;";
+            string queryUpdateVersion = $"UPDATE categories SET _version = @new_version WHERE id = @category_id_update;";
 
             MySqlTransaction transaction = null;
 
@@ -48,6 +50,19 @@ namespace SimpreRestApiQuestions.Service
                 cmd.Parameters.AddWithValue("@wrong_one", wrongAnswers[0]);
                 cmd.Parameters.AddWithValue("@wrong_two", wrongAnswers[1]);
                 cmd.Parameters.AddWithValue("@wrong_three", wrongAnswers[2]);
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = queryGetCurrentVersion;
+                cmd.Parameters.AddWithValue("@category_id_version", category_id);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                int _currentVersion = reader.GetInt32("version");
+                reader.Close(); 
+                reader.Dispose(); 
+
+                cmd.CommandText = queryUpdateVersion;
+                cmd.Parameters.AddWithValue("@category_id_update", category_id);
+                cmd.Parameters.AddWithValue("@new_version", (_currentVersion+1));
                 cmd.ExecuteNonQuery();
 
                 transaction.Commit();
@@ -136,7 +151,12 @@ namespace SimpreRestApiQuestions.Service
 
         public IEnumerable<CategoryDto> GetCategories()
         {
-            string query = "SELECT id, name FROM categories;";
+            //string query = "SELECT c.id, c.name, q.count(c.id) FROM categories c;";
+            string query = "select c.id, c.name, count(*) as total_questions " +
+                            "from question q " +
+                            "join categories c on q.category = c.id " +
+                            "group by q.category; ";
+
             try
             {
                 List<CategoryDto> categories = new List<CategoryDto>();
@@ -149,7 +169,8 @@ namespace SimpreRestApiQuestions.Service
                     categories.Add(new CategoryDto
                     {
                         Id = reader.GetInt32("id"),
-                        Name = reader.GetString("name")
+                        Name = reader.GetString("name"),
+                        NumberOfQuestions = reader.GetInt32("total_questions")
                     });
                 }
                 return categories; 
@@ -208,7 +229,7 @@ namespace SimpreRestApiQuestions.Service
 
         public int CreateCategory(string category)
         {
-            string query = $"INSERT INTO categories (name) VALUES(@name_category); select last_insert_id();";
+            string query = $"INSERT INTO categories (name, _version) VALUES(@name_category, 1); select last_insert_id();";
 
             try
             {
@@ -314,6 +335,29 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
+        public int GetCategoryVersion(int idCategory)
+        {
+            string queryGetCurrentVersion = $"SELECT c._version as version FROM categories c where id = @category_id_version;";
+            connection.Connect();
+            try
+            {
+                using MySqlCommand cmd = connection.Connection.CreateCommand();
+                cmd.CommandText = queryGetCurrentVersion;
+                cmd.Parameters.AddWithValue("@category_id_version", idCategory);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return reader.GetInt32("version");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Is not possible to get the version!", ex);
+            }
+            finally 
+            {
+                CloseConnection();
+            }
+        }
+
         private void CloseConnection()
         {
             try
@@ -325,6 +369,5 @@ namespace SimpreRestApiQuestions.Service
                 throw ex;
             }
         }
-
     }
 }
