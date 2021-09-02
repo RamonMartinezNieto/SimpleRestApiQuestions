@@ -27,22 +27,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.404
-    #- name: Restore dependencies
-    #  run: dotnet restore
-    #- name: Build
-    #  run: dotnet build --no-restore
-    #- name: Test
-    #  run: dotnet test --no-build --verbosity normal
-
-
-    - name: Setup NUKE
-      run: dotnet tool install Nuke.GlobalTool --global
-    - name: Install Workloads
-      # TODO: This is slow. Maybe we can make a docker container with this already done?
-      run: dotnet workload install android android-aot ios maccatalyst maui
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: SimpleRestApiQuestions
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: SimpleRestApiQuestions
     - name: Test
-      # skip Clean, Restore, and Compile as this will build the affect the whole solution.
-      # dotnet test will compile the necessary projects for testing only.
-      run: nuke Test --skip Clean Restore Compile
-    - name: Validation Checks
-      run: nuke ValidateSolution
+      working-directory: SimpleRestApiQuestions
+      run: dotnet test --no-build --verbosity normal
