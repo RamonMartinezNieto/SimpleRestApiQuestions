@@ -1,3 +1,6 @@
+[![Build & Test](https://github.com/RamonMartinezNieto/SimpleRestApiQuestions/actions/workflows/dotnet.yml/badge.svg)](https://github.com/RamonMartinezNieto/SimpleRestApiQuestions/actions/workflows/dotnet.yml)
+
+
 # SimpleRestApiQuestions
 
 Hello there! 
