@@ -84,7 +84,7 @@ namespace SimpleRestApiQuestions.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Question not removed, there are questions' foreign key with this category");
+                return BadRequest("Any exception occrus calling the data base.");
             }
         }
     }

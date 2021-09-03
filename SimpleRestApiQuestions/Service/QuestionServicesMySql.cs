@@ -152,7 +152,7 @@ namespace SimpreRestApiQuestions.Service
         public IEnumerable<CategoryDto> GetCategories()
         {
             //string query = "SELECT c.id, c.name, q.count(c.id) FROM categories c;";
-            string query = "select c.id, c.name, count(*) as total_questions " +
+            string query = "select c.id, c.name, c._version as version, count(*) as total_questions " +
                             "from question q " +
                             "join categories c on q.category = c.id " +
                             "group by q.category; ";
@@ -170,7 +170,8 @@ namespace SimpreRestApiQuestions.Service
                     {
                         Id = reader.GetInt32("id"),
                         Name = reader.GetString("name"),
-                        NumberOfQuestions = reader.GetInt32("total_questions")
+                        NumberOfQuestions = reader.GetInt32("total_questions"),
+                        NumberOfVersion = reader.GetInt32("version")
                     });
                 }
                 return categories; 
