@@ -1,6 +1,9 @@
+[![Build & Test](https://github.com/RamonMartinezNieto/SimpleRestApiQuestions/actions/workflows/dotnet.yml/badge.svg)](https://github.com/RamonMartinezNieto/SimpleRestApiQuestions/actions/workflows/dotnet.yml)
+
 # SimpleRestApiQuestions
 
-Hello there! 
+
+**Hello there!** 
 
 I made this app only for fun, to practice how to create a API Rest using the better ways that I know currently. 
 
@@ -12,6 +15,6 @@ Welll.... You can prove the API in heroku.
 Sometimes I close the deployment on heroku because I don't have the plan to pay for it, if you want to see the swagger doc. hit me out.
 
 
-Next step: Way to marge (using PR or automatic merge) with the master branch when all test are passed in GitHub Actions
+*Next step:* Way to marge (using PR or automatic merge) with the master branch when all test are passed in GitHub Actions
 
 ## PLEASE HELP ME!!! 
