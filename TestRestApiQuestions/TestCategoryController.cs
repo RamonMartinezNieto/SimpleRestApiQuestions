@@ -88,6 +88,12 @@ namespace TestRestSimpleRestApiQuestions.Service
 
             serviceMock.Verify(a => a.CreateCategory("BadRequest"));
         }
+
+        [Test]
+        public void Test_Fail() 
+        {
+            Assert.Fail();
+        }
     }
 }
 
