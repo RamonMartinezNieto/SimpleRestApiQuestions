@@ -4,6 +4,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SimpleRestApiQuestions.Dto;
 using SimpleRestApiQuestions.Service;
+using App.Metrics;
+using App.Metrics.Counter;
+using SimpleRestApiQuestions.Metrics;
 
 namespace SimpleRestApiQuestions.Controllers
 {
@@ -12,9 +15,14 @@ namespace SimpleRestApiQuestions.Controllers
     [Authorize]
     public class QuestionController : ControllerBase
     {
-        IQuestionService _questionService;
+        private readonly IQuestionService _questionService;
+        private readonly IMetrics _metrics;
 
-        public QuestionController(IQuestionService service) => _questionService = service;
+        public QuestionController(IQuestionService service, IMetrics metrics)
+        {
+            _questionService = service;
+            _metrics = metrics; 
+        }
 
         /// <summary>
         /// Get all questions in the repository of specific category.
@@ -35,6 +43,10 @@ namespace SimpleRestApiQuestions.Controllers
 
         /// <summary>
         /// Get random questions from specified category. 
+        /// If some action call this method means that start a quiz.
+        /// Metrics: Count Quiz
+        /// Metris: Count what id category is it.
+        /// Metrics: Count how many questions request the user. 
         /// </summary>
         /// <response code="200">Returns the number of questions requested</response>
         /// <response code="400">Some problem was occur with the category Id or the data base</response>
@@ -49,6 +61,9 @@ namespace SimpleRestApiQuestions.Controllers
 
             try
             {
+                _metrics.Measure.Counter.Increment(MetricsRegistry.NewQuizStartCounter);
+                _metrics.Measure.Counter.Increment(MetricsRegistry.CategoryQuizStart(id_category));
+
                 return Ok(_questionService.GetQuestions(quantity, id_category));
             }
             catch {

@@ -17,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using SimpleRestApiQuestions.Service;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace WebApplication2
 {
@@ -106,11 +107,16 @@ namespace WebApplication2
             {
                 options.AddPolicy(name: _MyCorsPolicy, builder =>
                 {
-                    builder.WithOrigins("https://localhost:44377", "https://quiz-questions-front.herokuapp.com")
+                    builder.WithOrigins("https://localhost:44377", "https://quiz-questions-front.herokuapp.com", "https://localhost:9090")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
             });
+
+            //Prometheus & metrics
+            //Only to avoid possible exception 
+            //services.Configure<KestrelServerOptions>(options => { options.AllowSynchronousIO = true; });
+            services.AddMetrics();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
