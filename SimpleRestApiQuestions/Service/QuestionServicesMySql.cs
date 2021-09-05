@@ -5,6 +5,7 @@ using System.Linq;
 using SimpleRestApiQuestions.Dto;
 using SimpleRestApiQuestions.Service;
 using SimpreRestApiQuestions.DataBase;
+using SimpleRestApiQuestions.Exceptions;
 
 namespace SimpreRestApiQuestions.Service
 {
@@ -241,7 +242,15 @@ namespace SimpreRestApiQuestions.Service
                 cmd.CommandText = query;
                 cmd.Parameters.AddWithValue("@name_category", category);
                 return Convert.ToInt32(cmd.ExecuteScalar());
-                
+
+            }
+            catch (MySqlException mySqlEx) 
+            {
+                if (mySqlEx.Message.Contains("Duplicate")) 
+                {
+                    throw new DuplicateCategoryException("the category is duplicated. ", mySqlEx);
+                }
+                throw new Exception("Fail in inerting new question. ", mySqlEx);
             }
             catch (Exception ex)
             {

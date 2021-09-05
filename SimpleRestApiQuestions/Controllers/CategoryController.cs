@@ -59,9 +59,9 @@ namespace SimpleRestApiQuestions.Controllers
                 //TODO usar create at  or create
                 return Ok($"Category added with id {idCategory}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("Category not added");
+                return BadRequest($"Category not added because: {ex.Message}"); 
             }
         }
 
