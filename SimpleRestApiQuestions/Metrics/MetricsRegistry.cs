@@ -18,9 +18,10 @@ namespace SimpleRestApiQuestions.Metrics
 
         public static CounterOptions CategoryQuizStart(int idCategory) => new CounterOptions
         {
-            Name = $"Category Quiz Start {idCategory}",
+            Name = $"Category Quiz Start",
             Context = "QuizController",
-            MeasurementUnit = Unit.Calls
+            MeasurementUnit = Unit.Calls,
+            Tags = new MetricTags("category",idCategory.ToString())
         };
     }
 }
