@@ -3,9 +3,11 @@ using Moq;
 using NUnit.Framework;
 using SimpleRestApiQuestions.Controllers;
 using SimpleRestApiQuestions.Dto;
+using SimpleRestApiQuestions.Exceptions;
 using SimpleRestApiQuestions.Service;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace TestRestSimpleRestApiQuestions.Service
 {
@@ -37,6 +39,7 @@ namespace TestRestSimpleRestApiQuestions.Service
 
             serviceMock.Setup(b => b.CreateCategory(It.IsAny<string>())).Returns(25);
             serviceMock.Setup(b => b.CreateCategory("BadRequest")).Throws(new Exception());
+            serviceMock.Setup(b => b.CreateCategory("DiplicatedCategory")).Throws(new DuplicateCategoryException());
 
             serviceMock.Setup(b => b.GetCategoryVersion(5)).Returns(2);
             serviceMock.Setup(b => b.GetCategoryVersion(4)).Returns(0);
@@ -97,7 +100,7 @@ namespace TestRestSimpleRestApiQuestions.Service
             Assert.That(typeof(BadRequestObjectResult), Is.EqualTo(result.GetType()));
             BadRequestObjectResult objectResult = (BadRequestObjectResult)result;
             Assert.That(objectResult.StatusCode, Is.EqualTo(400));
-            Assert.That(objectResult.Value, Is.EqualTo("Category not added"));
+            Assert.That(objectResult.Value, Is.EqualTo("Category not added because: Exception of type 'System.Exception' was thrown."));
 
             serviceMock.Verify(a => a.CreateCategory("BadRequest"));
         }
@@ -174,5 +177,23 @@ namespace TestRestSimpleRestApiQuestions.Service
 
             serviceMock.Verify(a => a.DeleteCategory(3));
         }
+
+
+        [Test]
+        public void Test_Create_Category_BadRequest_Duplicated_Category()
+        {
+            CategoryController controller = new CategoryController(serviceMock.Object);
+
+            ActionResult result = controller.Category("DiplicatedCategory");
+
+            Assert.That(typeof(BadRequestObjectResult), Is.EqualTo(result.GetType()));
+            BadRequestObjectResult objectResult = (BadRequestObjectResult)result;
+
+            Assert.That(objectResult.StatusCode, Is.EqualTo(400));
+            Assert.That(objectResult.Value, Is.EqualTo("Category not added because: Exception of type 'SimpleRestApiQuestions.Exceptions.DuplicateCategoryException' was thrown."));
+
+            serviceMock.Verify(a => a.CreateCategory("DiplicatedCategory"));
+        }
     }
+
 }

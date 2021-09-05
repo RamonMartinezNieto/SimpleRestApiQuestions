@@ -248,7 +248,7 @@ namespace SimpreRestApiQuestions.Service
             {
                 if (mySqlEx.Message.Contains("Duplicate")) 
                 {
-                    throw new DuplicateCategoryException("the category is duplicated. ", mySqlEx);
+                    throw new DuplicateCategoryException("the category is duplicated.", mySqlEx);
                 }
                 throw new Exception("Fail in inerting new question. ", mySqlEx);
             }
