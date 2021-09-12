@@ -31,7 +31,7 @@ namespace SimpleRestApiQuestions.Controllers
         /// <response code="200">Return response with the categories</response>
         /// <response code="400">If there were any problem with the database</response>
         [HttpGet]
-        [Route("Id/{categoryName:string}")]
+        [Route("Id/{categoryName}")]
         [AllowAnonymous]
         public ActionResult<int> Categories([Required] string categoryName) {
 
