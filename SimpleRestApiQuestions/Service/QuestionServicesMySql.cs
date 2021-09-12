@@ -368,6 +368,29 @@ namespace SimpreRestApiQuestions.Service
             }
         }
 
+        public int GetCategoryId(string categoryName)
+        {
+            string queryGetCurrentVersion = $"SELECT c.id FROM categories c where name = @category_name;";
+            connection.Connect();
+            try
+            {
+                using MySqlCommand cmd = connection.Connection.CreateCommand();
+                cmd.CommandText = queryGetCurrentVersion;
+                cmd.Parameters.AddWithValue("@category_name", categoryName);
+                using MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                return reader.GetInt32("id");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Is not possible to get the version!", ex);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
         private void CloseConnection()
         {
             try
@@ -379,5 +402,6 @@ namespace SimpreRestApiQuestions.Service
                 throw ex;
             }
         }
+
     }
 }

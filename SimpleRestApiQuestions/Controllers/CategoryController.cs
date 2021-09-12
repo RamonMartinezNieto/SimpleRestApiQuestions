@@ -26,6 +26,30 @@ namespace SimpleRestApiQuestions.Controllers
         public ActionResult<CategoryDto> Categories() => Ok(_questionService.GetCategories());
 
         /// <summary>
+        /// Get all categories that can be used to create a new questions. 
+        /// </summary>
+        /// <response code="200">Return response with the categories</response>
+        /// <response code="400">If there were any problem with the database</response>
+        [HttpGet]
+        [Route("Id/{categoryName:string}")]
+        [AllowAnonymous]
+        public ActionResult<int> Categories([Required] string categoryName) {
+
+            try {
+                int categoryId = _questionService.GetCategoryId(categoryName);
+
+                if (categoryId > 0)
+                    return Ok(categoryId);
+                else
+                    return NoContent();
+            } catch
+            {
+                return BadRequest();
+            }
+        }
+
+
+        /// <summary>
         /// Get the current version of the category version passed. The is used to know if the questions were 
         /// update to know if you need to request the newest version. 
         /// </summary>

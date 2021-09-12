@@ -19,6 +19,8 @@ namespace SimpleRestApiQuestions.Service
 
         IEnumerable<CategoryDto> GetCategories();
 
+        int GetCategoryId(string categoryName);
+
         int CreateCategory(string category);
 
         bool DeleteCategory(int id);
